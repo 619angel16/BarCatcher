@@ -21,12 +21,39 @@ import net.ravendb.client.documents.DocumentStore
 import net.ravendb.client.documents.IDocumentStore
 import java.io.FileInputStream
 import java.security.KeyStore
-import java.beans.
+import java.time.Instant
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val session = DocumentStoreHolder.createStore(this).openSession()
+        DocumentStore("http://live-test.ravendb.net", "Demo").initialize().use { store ->
+            for (i in 0..1000) {
+                store.openSession().use { session ->
+                    val insert = CafeBar(
+                        name = "Casa Paco",
+                        tel = "123546",
+                        streetAddress = "Av. Virgen de la Montaña, nº 26",
+                        addressLocality = "Cáceres",
+                        postalCode = 10002,
+                        addressCountry = "ES",
+                        geolong = null,
+                        url = null,
+                        geolat = null,
+                        capacity = null,
+                        email = null,
+                        customId = "Cafebar/619"
+                    )
+                    session.store(insert)
+                    val d = 7.0
+                    session.timeSeriesFor(insert, "ReminderSeverity").append(
+                        Date.from(Instant.now().plusSeconds(60)), d
+                    )
+                    session.saveChanges()
+                }
+            }
+        }
+        /*val session = DocumentStoreHolder.createStore(this).openSession()
         try {
             val insert = CafeBar(
                 "Casa Paco",
@@ -41,11 +68,11 @@ class MainActivity : ComponentActivity() {
                 capacity = null,
                 email = null
             )
-            session.store(insert, "testing")
-            session.saveChanges()
+            session.store(insert, "Cafebar/619")
+            //session.saveChanges()
         } finally {
             session.close()
-        }
+        }*/
         enableEdgeToEdge()
         setContent {
             BarCatcherTheme {
@@ -82,71 +109,24 @@ fun GreetingPreview() {
     }
 }
 
-open class Bar(
-    var name: String,
-    var geolong: Double?,
-    var url: String?,
-    var geolat: Double?,
-    var tel: String,
-    var capacity: Int?,
-    var streetAddress: String,
-    var addressLocality: String,
-    var postalCode: Int,
-    var addressCountry: String
-)
-
-class CafeBar(
-    name: String,
-    geolong: Double?,
-    url: String?,
-    geolat: Double?,
-    tel: String,
-    capacity: Int?,
-    streetAddress: String,
-    addressLocality: String,
-    postalCode: Int,
-    addressCountry: String,
-    var email: String? = null
-) : Bar(
-    name, geolong, url, geolat, tel, capacity,
-    streetAddress, addressLocality, postalCode, addressCountry
-)
-
-class DrinkBar(
-    name: String,
-    geolong: Double?,
-    url: String?,
-    geolat: Double?,
-    tel: String,
-    capacity: Int?,
-    streetAddress: String,
-    addressLocality: String,
-    postalCode: Int,
-    addressCountry: String
-) : Bar(
-    name, geolong, url, geolat, tel, capacity,
-    streetAddress, addressLocality, postalCode, addressCountry
-)
-
 object DocumentStoreHolder {
-//    private var CERTIFICATE_PATH = ""
+    //    private var CERTIFICATE_PATH = ""
     private val CERTIFICATE_PASSWORD = "apk1234".toCharArray()
 
     fun createStore(context: Context): IDocumentStore {
         val documentStore = DocumentStore().apply {
-
             urls = arrayOf("https://a.free.apeaorre.ravendb.cloud")
             database = "PIM_Testing"
             certificate = loadCertificateFromPfx(CERTIFICATE_PASSWORD, context)
         }
         return documentStore.initialize()
     }
+}
 
-    private fun loadCertificateFromPfx(pfxPassword: CharArray, context: Context): KeyStore {
-        val keyStore = KeyStore.getInstance("PKCS12")
-        context.resources.openRawResource(R.raw.apk).use { inputStream ->
-            keyStore.load(inputStream, pfxPassword)
-        }
-        return keyStore
+private fun loadCertificateFromPfx(pfxPassword: CharArray, context: Context): KeyStore {
+    val keyStore = KeyStore.getInstance("PKCS12")
+    context.resources.openRawResource(R.raw.apk).use { inputStream ->
+        keyStore.load(inputStream, pfxPassword)
     }
+    return keyStore
 }

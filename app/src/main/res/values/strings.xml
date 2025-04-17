@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BarCatcher</string>
+    <string name="title_activity_retrofit_tests">RetrofitTests</string>
 </resources>
