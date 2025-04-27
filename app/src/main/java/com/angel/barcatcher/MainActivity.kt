@@ -1,8 +1,7 @@
 package com.angel.barcatcher
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -13,73 +12,50 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import com.angel.barcatcher.api.Model.RemoteResult
+import com.angel.barcatcher.api.RetrofitService
 import com.angel.barcatcher.ui.theme.BarCatcherTheme
-import net.ravendb.client.documents.DocumentStore
-import net.ravendb.client.documents.IDocumentStore
-import java.io.FileInputStream
-import java.security.KeyStore
-import java.time.Instant
-import java.util.Date
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DocumentStore("http://live-test.ravendb.net", "Demo").initialize().use { store ->
-            for (i in 0..1000) {
-                store.openSession().use { session ->
-                    val insert = CafeBar(
-                        name = "Casa Paco",
-                        tel = "123546",
-                        streetAddress = "Av. Virgen de la Montaña, nº 26",
-                        addressLocality = "Cáceres",
-                        postalCode = 10002,
-                        addressCountry = "ES",
-                        geolong = null,
-                        url = null,
-                        geolat = null,
-                        capacity = null,
-                        email = null,
-                        customId = "Cafebar/619"
-                    )
-                    session.store(insert)
-                    val d = 7.0
-                    session.timeSeriesFor(insert, "ReminderSeverity").append(
-                        Date.from(Instant.now().plusSeconds(60)), d
-                    )
-                    session.saveChanges()
-                }
-            }
-        }
-        /*val session = DocumentStoreHolder.createStore(this).openSession()
-        try {
-            val insert = CafeBar(
-                "Casa Paco",
-                tel = "123546",
-                streetAddress = "Av. Virgen de la Montaña, nº 26",
-                addressLocality = "Cáceres",
-                postalCode = 10002,
-                addressCountry = "ES",
-                geolong = null,
-                url = null,
-                geolat = null,
-                capacity = null,
-                email = null
-            )
-            session.store(insert, "Cafebar/619")
-            //session.saveChanges()
-        } finally {
-            session.close()
-        }*/
+        val service = RetrofitService.RetrofitServiceFactory.makeRetrofitService(this)
+        Log.wtf("Retrofit Created!!", "Retrofit has been created!")
+
+        /*val insert = CafeBar(
+            name = "Casa Paco",
+            tel = "123546",
+            streetAddress = "Av. Virgen de la Montaña, nº 26",
+            addressLocality = "Cáceres",
+            postalCode = 10002,
+            addressCountry = "ES",
+            geolong = null,
+            url = null,
+            geolat = null,
+            capacity = null,
+            email = null,
+            customId = "Cafebar/619"
+        )*/
         enableEdgeToEdge()
         setContent {
             BarCatcherTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        service
                     )
                 }
             }
@@ -88,45 +64,42 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(name: String, modifier: Modifier = Modifier, service: RetrofitService) {
+    val test = getTest(service)
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(255, 0, 255, 100))
     ) {
-        Text(
-            text = "Hello $name!",
-            modifier = modifier
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BarCatcherTheme {
-        Greeting("Android")
-    }
-}
-
-object DocumentStoreHolder {
-    //    private var CERTIFICATE_PATH = ""
-    private val CERTIFICATE_PASSWORD = "apk1234".toCharArray()
-
-    fun createStore(context: Context): IDocumentStore {
-        val documentStore = DocumentStore().apply {
-            urls = arrayOf("https://a.free.apeaorre.ravendb.cloud")
-            database = "PIM_Testing"
-            certificate = loadCertificateFromPfx(CERTIFICATE_PASSWORD, context)
+        if (test == null) {
+            Text(
+                text = "Hello $name!",
+                modifier = modifier
+            )
+            Log.wtf("Error Consulta", "No se ha recuperado la info")
+        } else {
+            val countries = getTest(service)?.body()?.Results
+            if (countries != null) {
+                for (country in countries) {
+                    Log.wtf("Consulta exitosa", country.name)
+                    Text(
+                        text = "Country: ${country.name}",
+                        modifier = modifier
+                    )
+                }
+            }
         }
-        return documentStore.initialize()
     }
 }
 
-private fun loadCertificateFromPfx(pfxPassword: CharArray, context: Context): KeyStore {
-    val keyStore = KeyStore.getInstance("PKCS12")
-    context.resources.openRawResource(R.raw.apk).use { inputStream ->
-        keyStore.load(inputStream, pfxPassword)
+@OptIn(DelicateCoroutinesApi::class)
+@Composable
+fun getTest(service: RetrofitService): Response<RemoteResult>? {
+    var result by remember { mutableStateOf<Response<RemoteResult>?>(null) }
+    LaunchedEffect(true) {
+        val query = GlobalScope.async(Dispatchers.IO) { service.getDoc() }
+        result = query.await()
+        Log.wtf("Info consulta?", result!!.toString())
     }
-    return keyStore
+    return result
 }

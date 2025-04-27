@@ -5,6 +5,6 @@ import retrofit2.http.HTTP
 
 interface BarDAO {
 
-    @HTTP("FROM Cafebar WHERE @id = :barID")
-    suspend fun getAnimalById(barID: String): Bar
+    /*@HTTP("FROM Cafebar WHERE @id = :barID")
+    suspend fun getAnimalById(barID: String): Bar*/
 }

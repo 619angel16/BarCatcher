@@ -1,7 +1,6 @@
 package com.angel.barcatcher.api.Model
 
-import com.angel.barcatcher.Model.Bar
-
 data class RemoteResult(
-    val bar : Bar
+    val Results: List<Country>,
+    val Includes: Map<String, Any> // O puedes usar Any si el contenido puede variar
 )
