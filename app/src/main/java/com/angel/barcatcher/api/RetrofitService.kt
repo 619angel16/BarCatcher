@@ -42,7 +42,6 @@ interface RetrofitService {
                 .connectTimeout(60, TimeUnit.SECONDS)
 
             try {
-                // Cargar el KeyStore desde el PFX
                 val keyStore = KeyStore.getInstance("PKCS12")
                 val pfxInputStream =
                     context.resources.openRawResource(R.raw.apk)
@@ -51,17 +50,14 @@ interface RetrofitService {
                     "apk1234".toCharArray()
                 )
 
-                // Crear KeyManager con el certificado cliente
                 val keyManagerFactory =
                     KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
                 keyManagerFactory.init(keyStore, "apk1234".toCharArray())
 
-                // Crear TrustManager confiando en CA del sistema (opcional: también podrías cargar un trust personalizado)
                 val trustManagerFactory =
                     TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
                 trustManagerFactory.init(null as KeyStore?) // null = confía en sistema operativo
 
-                // Crear SSLContext con ambos
                 val sslContext = SSLContext.getInstance("TLS")
                 sslContext.init(
                     keyManagerFactory.keyManagers,
