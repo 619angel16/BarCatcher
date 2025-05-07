@@ -14,13 +14,10 @@ import com.angel.barcatcher.repository.barDrinkRepository
 import com.angel.barcatcher.screens.BarInfo
 import com.angel.barcatcher.screens.BarListActivity
 
-
 /*Elemento composable que se va a encargar de orquestar la navegacion, va a conocer
 las pantallas de nuestra app y se va a encargar de gestionar el paso entre ellas*/
 @Composable
 fun AppNavigation(
-    context: Context,
-    service: RetrofitService,
     drinkBar: barDrinkRepository,
     cafeBar: barCafeRepository
 ) {

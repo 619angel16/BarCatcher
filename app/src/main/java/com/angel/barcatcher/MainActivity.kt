@@ -16,6 +16,6 @@ class MainActivity : ComponentActivity() {
         val drinkBar = barDrinkRepository(service)
         val cafeBar = barCafeRepository(service)
         Log.wtf("Retrofit Created!!", "Retrofit has been created!")
-        setContent { AppNavigation(this, service, drinkBar, cafeBar) }
+        setContent { AppNavigation(drinkBar, cafeBar) }
     }
 }
