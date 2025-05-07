@@ -34,10 +34,12 @@ import com.angel.barcatcher.api.Model.Drinkbar
 import com.angel.barcatcher.navigation.AppScreens
 import com.angel.barcatcher.repository.barCafeRepository
 import com.angel.barcatcher.repository.barDrinkRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BarListActivity(
     navController: NavController, drinkBarRep: barDrinkRepository,

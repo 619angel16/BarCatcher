@@ -1,6 +1,5 @@
 package com.angel.barcatcher.screens
 
-import android.R
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,10 +39,12 @@ import com.angel.barcatcher.api.Model.Drinkbar
 import com.angel.barcatcher.navigation.AppScreens
 import com.angel.barcatcher.repository.barCafeRepository
 import com.angel.barcatcher.repository.barDrinkRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BarInfo(
     navController: NavController,
@@ -70,7 +71,6 @@ fun BarInfo(
             bar = query.await().body()?.Results
         }
         if (bar != null) {
-            Log.wtf("Response info", bar.toString())
             InfoCard(bar!!.first(), navController)
         }
     }
@@ -127,7 +127,7 @@ fun InfoCard(
                     // Dirección
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_dialog_map),
+                            painter = painterResource(android.R.drawable.ic_dialog_map),
                             contentDescription = "Dirección",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(16.dp)
@@ -148,7 +148,7 @@ fun InfoCard(
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_menu_call),
+                                painter = painterResource(android.R.drawable.ic_menu_call),
                                 contentDescription = "Teléfono",
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(16.dp)
@@ -252,7 +252,7 @@ fun InfoCard(
                     // Dirección
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            painter = painterResource(R.drawable.ic_dialog_map),
+                            painter = painterResource(android.R.drawable.ic_dialog_map),
                             contentDescription = "Dirección",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(16.dp)
@@ -273,7 +273,7 @@ fun InfoCard(
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_menu_call),
+                                painter = painterResource(android.R.drawable.ic_menu_call),
                                 contentDescription = "Teléfono",
                                 tint = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier.size(16.dp)
@@ -281,7 +281,7 @@ fun InfoCard(
 
                             Spacer(modifier = Modifier.width(8.dp))
 
-                            bar.tel?.let {
+                            bar.tel.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyMedium,

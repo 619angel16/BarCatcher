@@ -27,11 +27,13 @@ import com.angel.barcatcher.api.Model.Cafebar
 import com.angel.barcatcher.api.Model.Drinkbar
 import com.angel.barcatcher.repository.barCafeRepository
 import com.angel.barcatcher.repository.barDrinkRepository
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.json.JSONObject
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BarJsonViewer(
     ID: String,
@@ -79,6 +81,7 @@ fun BarJsonViewer(
         }
     }
 }
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BarJsonViewer(
     ID: String,
