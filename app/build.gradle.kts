@@ -63,6 +63,7 @@ dependencies {
     implementation (libs.retrofit.v272)
     implementation (libs.converter.gson.v272)
     implementation(libs.ravendb)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

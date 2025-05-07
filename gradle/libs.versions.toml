@@ -1,5 +1,5 @@
 [versions]
-agp = "8.9.1"
+agp = "8.9.2"
 converterGson = "2.9.0"
 converterGsonVersion = "2.7.2"
 gson = "2.10.1"
@@ -18,6 +18,7 @@ ravendbClient = "4.0.0-rc1"
 ravendb = "6.0.1"
 retrofit = "2.9.0"
 retrofitVersion = "2.7.2"
+navigationCompose = "2.8.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,7 @@ ravendb-client = { group = "net.ravendb", name = "ravendb-client", version.ref =
 ravendb = { group = "net.ravendb", name = "ravendb", version.ref = "ravendb" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-v272 = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofitVersion" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
