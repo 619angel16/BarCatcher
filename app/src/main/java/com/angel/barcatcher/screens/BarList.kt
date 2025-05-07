@@ -74,21 +74,29 @@ fun TwoColumnList(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    Column(Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)) {
+    //TODO Modify both Bar Lists styles
+
+    //Columna Contenedora
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        //Fila de contenidos
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(15.dp),
             horizontalArrangement = Arrangement.spacedBy(15.dp)
         ) {
+            //Columna dinámica contenida en la primera celda de ROW (Fila de contenidos)
             LazyColumn(
                 modifier = Modifier
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                //Cabecera de la columna dinámica
                 stickyHeader {
                     Row(
                         Modifier
@@ -104,7 +112,9 @@ fun TwoColumnList(
                         )
                     }
                 }
+                //Celdas de la columna dinámica
                 items(cafeList) { item ->
+                    //Estructura de tipo targeta (Se usa principalmente por comodidad
                     Card(
                         modifier = Modifier
                             .fillMaxWidth(0.9f)
@@ -129,6 +139,7 @@ fun TwoColumnList(
                     }
                 }
             }
+            //Columna dinámica contenida en la segunda celda de ROW (Fila de contenidos)
             LazyColumn(
                 modifier = Modifier
                     .weight(1f),

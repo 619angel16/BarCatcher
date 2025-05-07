@@ -74,7 +74,6 @@ fun BarInfo(
             InfoCard(bar!!.first(), navController)
         }
     }
-
 }
 
 @Composable
@@ -98,7 +97,7 @@ fun InfoCard(
             )
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                // Imagen del lugar
+                // Imagen del bar cafe
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -115,7 +114,7 @@ fun InfoCard(
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    // Nombre del lugar
+                    // Nombre del bar cafe
                     Text(
                         text = bar.name,
                         style = MaterialTheme.typography.headlineSmall,
@@ -167,15 +166,15 @@ fun InfoCard(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     // Descripción
+                    //Inicio bloque de información
                     if (bar.capacity?.isNotEmpty() == true) {
-                        Text(
-                            text = bar.capacity,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        //TODO Add new capacity info
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
+                    //Fin bloque de información
+
+                    //TODO Recover new info from DB and print it
 
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -184,10 +183,11 @@ fun InfoCard(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
+                        //Botón compartir
                         TextButton(onClick = { /* Compartir */ }) {
                             Text("Compartir")
                         }
-
+                        //Botón Ver JSON
                         FilledTonalButton(onClick = {
                             val parts = bar.metadata.id.split("/", limit = 2)
                             if (parts.size == 2) {
@@ -223,7 +223,7 @@ fun InfoCard(
             )
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                // Imagen del lugar
+                // Imagen del bar de copas
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -240,7 +240,7 @@ fun InfoCard(
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    // Nombre del lugar
+                    // Nombre del bar de copas
                     Text(
                         text = bar.name,
                         style = MaterialTheme.typography.headlineSmall,
