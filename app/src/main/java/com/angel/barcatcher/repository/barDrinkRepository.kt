@@ -1,8 +1,5 @@
 package com.angel.barcatcher.repository
 
-import com.angel.barcatcher.api.Model.CafeBarRemoteList
-import com.angel.barcatcher.api.Model.CafeBarRemoteResult
-import com.angel.barcatcher.api.Model.Cafebar
 import com.angel.barcatcher.api.Model.DrinkBarRemoteList
 import com.angel.barcatcher.api.Model.DrinkBarRemoteResult
 import com.angel.barcatcher.api.RetrofitService
