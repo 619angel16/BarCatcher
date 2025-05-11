@@ -35,6 +35,9 @@ interface RetrofitService {
     @GET("streams/queries?query=from+\"Drinkbar\"")
     suspend fun getAllBarDrink(): Response<DrinkBarRemoteList>
 
+    @GET("streams/queries?query=from+\"Cafebar\"+where ")
+    suspend fun getCafeByCoords(): Response<CafeBarRemoteResult>
+
     object RetrofitServiceFactory {
         private fun generateSecureOkHttpClient(context: Context): OkHttpClient {
             val httpClientBuilder = OkHttpClient.Builder()
