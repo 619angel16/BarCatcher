@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.okhttp)
     implementation("com.mapbox.maps:android:11.12.0")
+    implementation("com.mapbox.extension:maps-compose:11.12.0")
     implementation(libs.logging.interceptor)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

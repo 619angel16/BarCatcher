@@ -1,6 +1,7 @@
 package com.angel.barcatcher.navigation
 
 import BarJsonViewer
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,12 +11,13 @@ import androidx.navigation.navArgument
 import com.angel.barcatcher.repository.barCafeRepository
 import com.angel.barcatcher.repository.barDrinkRepository
 import com.angel.barcatcher.screens.BarInfo
-import com.angel.barcatcher.screens.BarListActivity
+import com.angel.barcatcher.screens.MapBoxView
 
 /*Elemento composable que se va a encargar de orquestar la navegacion, va a conocer
 las pantallas de nuestra app y se va a encargar de gestionar el paso entre ellas*/
 @Composable
 fun AppNavigation(
+    context: Context,
     drinkBar: barDrinkRepository,
     cafeBar: barCafeRepository
 ) {
@@ -23,12 +25,11 @@ fun AppNavigation(
     val navController = rememberNavController()
 
     //El elemento NavHost va a conocer las pantallas y como navegar entre ellas
-    NavHost(navController = navController, startDestination = AppScreens.BarList.route) {
+    NavHost(navController = navController, startDestination = AppScreens.Map.route) {
         //El navHost estara formado por diferente composables que seran cada una de nuestras pantallas
-        composable(route = AppScreens.BarList.route) {
-            BarListActivity(navController, drinkBar, cafeBar)
+        composable(route = AppScreens.Map.route) {
+            MapBoxView(context, cafeBar, drinkBar, navController)
         }
-
         composable(
             route = AppScreens.BarInfo.route + "/{type}/{barID}",
             arguments = listOf(
@@ -63,7 +64,7 @@ fun AppNavigation(
                     fullId,
                     cafeBar
                 )
-            }else if (type.contains("Drinkbar")){
+            } else if (type.contains("Drinkbar")) {
                 BarJsonViewer(
                     fullId,
                     drinkBar

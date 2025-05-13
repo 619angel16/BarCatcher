@@ -1,5 +1,6 @@
 package com.angel.barcatcher.repository
 
+import com.angel.barcatcher.api.Model.CafeBarRemoteList
 import com.angel.barcatcher.api.Model.DrinkBarRemoteList
 import com.angel.barcatcher.api.Model.DrinkBarRemoteResult
 import com.angel.barcatcher.api.RetrofitService
@@ -12,5 +13,9 @@ class barDrinkRepository (service: RetrofitService) {
 
     suspend fun getAllDrink(): Response<DrinkBarRemoteList> = source.getAllBarDrink()
 
-    //TODO IMPL suspend fun getDrinkByCoords(lat: Float, long : Float): CafeBarRemoteResult = source.getBarCafe()
+    private fun buildQuery(lat: Double, long: Double): String {
+        return "from \"Drinkbars\" where spatial.within(spatial.point(latitude, longitude), spatial.circle(0.28, $lat, $long))"
+    }
+    suspend fun getDrinkByCoords(lat: Double, long: Double): Response<DrinkBarRemoteList> =
+        source.getDrinkByCoords(buildQuery(lat, long))
 }

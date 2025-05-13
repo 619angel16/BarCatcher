@@ -42,7 +42,7 @@ fun BarJsonViewer(
     maxHeight: Int? = 400
 ) {
     var bar by remember { mutableStateOf<List<Cafebar>?>(null) }
-    if (ID.contains("Cafebar")) {
+    if (ID.contains("Cafebars")) {
         LaunchedEffect(true) {
             val query = GlobalScope.async(Dispatchers.IO) { cafeRep.getCafe(ID) }
             bar = query.await().body()?.Results
@@ -90,7 +90,7 @@ fun BarJsonViewer(
     maxHeight: Int? = 400
 ) {
     var bar by remember { mutableStateOf<List<Drinkbar>?>(null) }
-    if (ID.contains("Drinkbar")) {
+    if (ID.contains("Drinkbars")) {
         LaunchedEffect(true) {
             val query = GlobalScope.async(Dispatchers.IO) { drinkRep.getDrink(ID) }
             bar = query.await().body()?.Results
@@ -133,11 +133,10 @@ fun BarJsonViewer(
 
 private fun createBarJsonString(bar: Cafebar): String {
     val jsonObj = JSONObject()
-
+    bar.longitude?.let { jsonObj.put("longitude", it) }
+    bar.latitude?.let { jsonObj.put("latitude", it) }
     jsonObj.put("name", bar.name)
-    bar.geo_long?.let { jsonObj.put("geolong", it) }
     bar.url?.let { jsonObj.put("url", it) }
-    bar.geo_lat?.let { jsonObj.put("geolat", it) }
     bar.email?.let { jsonObj.put("email", it) }
     jsonObj.put("tel", bar.tel)
     bar.capacity?.let { jsonObj.put("capacity", it) }
@@ -161,11 +160,10 @@ private fun createBarJsonString(bar: Cafebar): String {
 
 private fun createBarJsonString(bar: Drinkbar): String {
     val jsonObj = JSONObject()
-
+    bar.longitude?.let { jsonObj.put("longitude", it) }
+    bar.latitude?.let { jsonObj.put("latitude", it) }
     jsonObj.put("name", bar.name)
-    bar.geo_long?.let { jsonObj.put("geolong", it) }
     bar.url?.let { jsonObj.put("url", it) }
-    bar.geo_lat?.let { jsonObj.put("geolat", it) }
     bar.email?.let { jsonObj.put("email", it) }
     jsonObj.put("tel", bar.tel)
     bar.capacity?.let { jsonObj.put("capacity", it) }

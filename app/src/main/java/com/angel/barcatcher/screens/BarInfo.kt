@@ -31,9 +31,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.angel.barcatcher.R
 import com.angel.barcatcher.api.Model.Cafebar
 import com.angel.barcatcher.api.Model.Drinkbar
 import com.angel.barcatcher.navigation.AppScreens
@@ -65,7 +67,7 @@ fun BarInfo(
         }
     } else if (id.contains("Drinkbar", true)) {
         var bar by remember { mutableStateOf<List<Drinkbar>?>(null) }
-        LaunchedEffect(true) {
+        LaunchedEffect(id) {
             val query = GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrink(id) }
             Log.wtf("Query result", query.await().body()!!.Results.toString())
             bar = query.await().body()?.Results
@@ -163,41 +165,53 @@ fun InfoCard(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
                     // Descripción
                     //Inicio bloque de información
                     if (bar.capacity?.isNotEmpty() == true) {
-                        //TODO Add new capacity info
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_group_24),
+                                contentDescription = "Capacidad",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = bar.capacity,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
+                }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-                    //Fin bloque de información
+                Spacer(modifier = Modifier.height(12.dp))
+                //Fin bloque de información
 
-                    //TODO Recover new info from DB and print it
+                Spacer(modifier = Modifier.height(8.dp))
 
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Botones de acción
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        //Botón compartir
-                        TextButton(onClick = { /* Compartir */ }) {
-                            Text("Compartir")
+                // Botones de acción
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    //Botón compartir
+                    TextButton(onClick = { /* Compartir */ }) {
+                        Text("Compartir")
+                    }
+                    //Botón Ver JSON
+                    FilledTonalButton(onClick = {
+                        val parts = bar.metadata.id.split("/", limit = 2)
+                        if (parts.size == 2) {
+                            val type = parts[0]
+                            val barID = parts[1]
+                            navController.navigate("${AppScreens.JSONViewer.route}/$type/$barID")
                         }
-                        //Botón Ver JSON
-                        FilledTonalButton(onClick = {
-                            val parts = bar.metadata.id.split("/", limit = 2)
-                            if (parts.size == 2) {
-                                val type = parts[0]
-                                val barID = parts[1]
-                                navController.navigate("${AppScreens.JSONViewer.route}/$type/$barID")
-                            }
-                        }) {
-                            Text("Ver JSON")
-                        }
+                    }) {
+                        Text("Ver JSON")
                     }
                 }
             }
@@ -205,13 +219,16 @@ fun InfoCard(
     }
 }
 
+
 @Composable
 fun InfoCard(
     bar: Drinkbar, navController: NavController
 ) {
-    Column(Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()

@@ -26,17 +26,20 @@ interface RetrofitService {
     @GET("docs")
     suspend fun getBarCafe(@Query("id") id: String): Response<CafeBarRemoteResult>
 
-    @GET("streams/queries?query=from+\"Cafebar\"")
+    @GET("streams/queries?query=from+\"Cafebars\"")
     suspend fun getAllBarCafe(): Response<CafeBarRemoteList>
 
     @GET("docs")
     suspend fun getBarDrink(@Query("id") id: String): Response<DrinkBarRemoteResult>
 
-    @GET("streams/queries?query=from+\"Drinkbar\"")
+    @GET("streams/queries?query=from+\"Drinkbars\"")
     suspend fun getAllBarDrink(): Response<DrinkBarRemoteList>
 
-    @GET("streams/queries?query=from+\"Cafebar\"+where ")
-    suspend fun getCafeByCoords(): Response<CafeBarRemoteResult>
+    @GET("streams/queries")
+    suspend fun getCafeByCoords(@Query("query") query: String): Response<CafeBarRemoteList>
+
+    @GET("streams/queries")
+    suspend fun getDrinkByCoords(@Query("query") query: String): Response<DrinkBarRemoteList>
 
     object RetrofitServiceFactory {
         private fun generateSecureOkHttpClient(context: Context): OkHttpClient {
@@ -83,7 +86,7 @@ interface RetrofitService {
 
         fun makeRetrofitService(context: Context): RetrofitService {
             return Retrofit.Builder()
-                .baseUrl("https://a.free.apeaorre.ravendb.cloud/databases/PIM_Testing/")
+                .baseUrl("https://a.free.apeaorre.ravendb.cloud/databases/Bar_CC/")
                 .client(generateSecureOkHttpClient(context))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitService::class.java)
