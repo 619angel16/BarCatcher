@@ -1,6 +1,5 @@
 package com.angel.barcatcher.repository
 
-import android.util.Log
 import com.angel.barcatcher.api.Model.CafeBarRemoteList
 import com.angel.barcatcher.api.Model.CafeBarRemoteResult
 import com.angel.barcatcher.api.RetrofitService
