@@ -1,0 +1,159 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.385430, 39.467515] },
+      "properties": {
+        "nombre": "Ático Club-Ático Chillout",
+        "direccion": "Avenida Virgen de Guadalupe, 41-43",
+        "localidad": "Cáceres",
+        "codigo_postal": 10005,
+        "telefono": "+34 639858897",
+        "email": "general@aticoclub.com",
+        "url": "http://www.aticoclub.com",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.378637, 39.474189] },
+      "properties": {
+        "nombre": "Boogaloo",
+        "direccion": "Avenida Hernán Cortés, 10 bajo 5",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "telefono": "+34 617604471",
+        "email": "djbarry69@yahoo.es",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.373759, 39.472559] },
+      "properties": {
+        "nombre": "Bulevar",
+        "direccion": "Donoso Cortés, 2",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "telefono": "+34 686244000",
+        "email": "correobelleart@gmail.com",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.370927, 39.474192] },
+      "properties": {
+        "nombre": "El Corral de las Cigüeñas",
+        "direccion": "Cuesta de Aldana, 6",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "telefono": "927216425-647758245",
+        "email": "luis@elcorralcc.com",
+        "url": "http://elcorralcc.com/",
+        "capacidad": "62 pax",
+        "sirve_comida": "Sí"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.373250, 39.472202] },
+      "properties": {
+        "nombre": "El Pequeño Gin",
+        "direccion": "Pizarro, 5",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "telefono": "+34 927761574",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.370867, 39.475652] },
+      "properties": {
+        "nombre": "Farmacia Legend",
+        "direccion": "Plaza Mayor, 20",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "telefono": "+34 927261052",
+        "email": "laminervatapas@gmail.com",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.373483, 39.472612] },
+      "properties": {
+        "nombre": "La Traviata",
+        "direccion": "Sergio Sánchez, 8",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "email": "expolatraviatacc@gmail.com",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.380953, 39.473158] },
+      "properties": {
+        "nombre": "Lambretta",
+        "direccion": "Venecia, 2",
+        "localidad": "Cáceres",
+        "codigo_postal": 10001,
+        "telefono": "+34 677480372",
+        "email": "jesuslucianom@gmail.com",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.371898, 39.471787] },
+      "properties": {
+        "nombre": "Las Claras",
+        "direccion": "Plaza de la Soledad, S/N",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "telefono": "+34 618402756",
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.377899, 39.471431] },
+      "properties": {
+        "nombre": "Manómetro",
+        "direccion": "Avenida de España, 6",
+        "localidad": "Cáceres",
+        "codigo_postal": 10001,
+        "telefono": "+34 927220614",
+        "email": "info@manometro.es",
+        "capacidad": "40 pax",
+        "sirve_comida": "Sí"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.373419, 39.472625] },
+      "properties": {
+        "nombre": "Maria Mandiles",
+        "direccion": "Sergio Sánchez, 7",
+        "localidad": "Cáceres",
+        "codigo_postal": 10003,
+        "sirve_comida": "No"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [-6.379866, 39.473252] },
+      "properties": {
+        "nombre": "Sala Barroco",
+        "direccion": "Plaza de Albatros, 12",
+        "localidad": "Cáceres",
+        "codigo_postal": 10001,
+        "email": "barroconoche@hotmail.com",
+        "sirve_comida": "No"
+      }
+    }
+  ]
+}

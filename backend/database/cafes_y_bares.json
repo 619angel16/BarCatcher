@@ -1,0 +1,1130 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Adarve",
+        "type": "CafeBar",
+        "address": "Calle Maestro Sánchez Garrido, 4",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927244874",
+        "email": "cafeadarve@gmail.com",
+        "capacity": "30 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372416, 39.474155]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Al-Andalus",
+        "type": "CafeBar",
+        "address": "Avenida Isabel de Moctezuma, 22",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379171, 39.463080]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Al-Andalus",
+        "type": "CafeBar",
+        "address": "Calle Santa Apolonia, 7",
+        "postalCode": "10002",
+        "locality": "Cáceres",
+        "country": "ES"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.375656, 39.472212]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alfonso IX (Hotel)",
+        "type": "CafeBar",
+        "address": "Moret, 20-Parras, 9",
+        "postalCode": "10004",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927246400",
+        "email": "info@hotelalfonsoix.com",
+        "url": "http://www.hotelalfonsoix.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.373581, 39.474529]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Asador La Tahona",
+        "type": "CafeBar",
+        "address": "Calle Felipe Uribarri, 4",
+        "postalCode": "10004",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 620389991",
+        "email": "asadorlatahona@gmail.com",
+        "capacity": "78 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.374020, 39.473653]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Camelot Cafés y Tapas",
+        "type": "CafeBar",
+        "address": "Londres, 26",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 617519391",
+        "email": "agustinpajares30@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.389249, 39.468686]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cervecería 100 Montaditos",
+        "type": "CafeBar",
+        "address": "San Pedro de Alcántara, 7",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927 21 36 91",
+        "url": "http://www.100montaditoscc.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379500, 39.470811]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "El Requeté",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 27",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372416, 39.474155]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "El Requeté",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 27",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927260383",
+        "email": "rubenblanco@telefonica.net"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371463, 39.475348]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Andaluza",
+        "type": "CafeBar",
+        "address": "Calle Santa Joaquina de Vedruna, 6",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "654373734-927240478",
+        "url": "http://www.laandaluzalowcost.com",
+        "capacity": "30 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.380779, 39.469848]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Cacharrería",
+        "type": "CafeBar",
+        "address": "Calle Orellana, 1",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927030723",
+        "email": "lacacharreria@live.com",
+        "capacity": "70 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371255, 39.473529]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Estancia",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 6",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927248064",
+        "capacity": "50 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.376419, 39.471489]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Matilda Taberna CB",
+        "type": "CafeBar",
+        "address": "Plaza de Santiago, 9",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 667470603",
+        "email": "lamatildataberna@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.369100, 39.475748]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Minerva",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 24",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "685118939-618378721",
+        "email": "laminervatapas@gmail.com",
+        "url": "http://www.laminerva.es",
+        "capacity": "70 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371343, 39.475454]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Terraza del Príncipe",
+        "type": "CafeBar",
+        "address": "Calle José Luis Cotallo, (dentro del parque)",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927288067",
+        "email": "laterrazadelprincipe@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.382489, 39.474659]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Tapería",
+        "type": "CafeBar",
+        "address": "Calle Sanchez Garrido, 1 bajo",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927225147-657905853",
+        "email": "lataperia2010@hotmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372593, 39.474086]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Leoncio",
+        "type": "CafeBar",
+        "address": "Calle Antonio Reyes Huertas, 28",
+        "postalCode": "10002",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927 210 904"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.376380, 39.467604]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lizarrán",
+        "type": "CafeBar",
+        "address": "Londres, 1 (Centro comercial Ruta de la Plata)",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927042877"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.388819, 39.467970]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lizarrán",
+        "type": "CafeBar",
+        "address": "Calle Moret, 34",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927042877",
+        "email": "jorgepastafiore@gmail.com",
+        "capacity": "40 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.373535, 39.474077]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Lo Nuestro",
+        "type": "CafeBar",
+        "address": "Calle del Duque, 10",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 651652997",
+        "email": "lonuestro@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.370667, 39.475997]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Los Andares",
+        "type": "CafeBar",
+        "address": "Santa Joaquina de Vedruna, 17 bajo",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927043627",
+        "email": "jorge.jimenezduran8@gmail.com",
+        "capacity": "40 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.380416, 39.469885]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Los Baldíos",
+        "type": "CafeBar",
+        "address": "Doctor Fleming, 4",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927043338",
+        "email": "qiqecc@hotmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.380148, 39.473070]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Los Siete Jardines",
+        "type": "CafeBar",
+        "address": "Rincón de la Monja, 9",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372416, 39.474155]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Los Siete Jardines",
+        "type": "CafeBar",
+        "address": "Rincón de la Monja, 9",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927 21 73 36"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.369486, 39.473470]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mandía",
+        "type": "CafeBar",
+        "address": "Calle Isla de Rodas, 2. Edificio Alcazaba",
+        "postalCode": "10006",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927292780",
+        "capacity": "50 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.390876, 39.472919]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mario & Marieta",
+        "type": "CafeBar",
+        "address": "Avenida de España, 22",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927242151-610950022",
+        "email": "marioymarieta@gmail.com",
+        "url": "http://www.marioymarieta.com",
+        "capacity": "43 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379294, 39.469440]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mastropiero",
+        "type": "CafeBar",
+        "address": "Fuentenueva, 4",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927214837",
+        "email": "contacto@mastropiero@gastrobar.es"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372386, 39.471576]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Only One",
+        "type": "CafeBar",
+        "address": "Av. Virgen de Guadalupe, 5",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379798, 39.471885]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Perhaps",
+        "type": "CafeBar",
+        "address": "Plaza Marrón, 7",
+        "postalCode": "10002",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927289547"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.375211, 39.472006]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Potosí Vinoteca",
+        "type": "CafeBar",
+        "address": "Avenida Isabel de Moctezuma, 25",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927212141"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379318, 39.462911]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pro-va-lo",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 20 Izq.",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "6.33949332E8",
+        "email": "pedro.adolfo.arias.casares@gmail.com",
+        "url": "http://www.provalo.es"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378097, 39.462741]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Puerta de Mérida",
+        "type": "CafeBar",
+        "address": "Calle Puerta de Mérida, 10",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927261068",
+        "email": "encuadernacionroma@gmail.com",
+        "capacity": "17 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371750, 39.472223]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tapería Casa Don Fernando",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 30",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927627176",
+        "email": "info@casadonfernando.com",
+        "url": "http://www.casadonfernando.com",
+        "capacity": "40 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371623, 39.475231]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tapería Hornos 25",
+        "type": "CafeBar",
+        "address": "Calle Hornos, 25",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "927235906-646600752",
+        "email": "jfgcordero@msn.com",
+        "url": "http://www.taperiahornos25.com",
+        "capacity": "45 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372046, 39.471786]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tapería los Ibéricos",
+        "type": "CafeBar",
+        "address": "Paneras, 14",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 637443137",
+        "email": "marrajo76@hotmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.373009, 39.475162]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Tapería Yuste (Hotel NH Palacio de Oquendo)",
+        "type": "CafeBar",
+        "address": "Plaza de San Juan, 11",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927215800",
+        "email": "nhcollectionpalaciodeoquendo@nh-hotels.com",
+        "url": "http://www.nh-hoteles.es",
+        "capacity": "60 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372855, 39.473573]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Viña Grande",
+        "type": "CafeBar",
+        "address": "Calle General Yagüe, 7",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "9.27626903E8",
+        "email": "adriancancho@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378814, 39.471477]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bar Poppy",
+        "type": "CafeBar",
+        "address": "Plaza de la Concepción, 19",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "9.27215613E8",
+        "email": "poppymontse@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372627, 39.476032]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Centro de Servicios al Transporte (I.T.V.)",
+        "type": "CafeBar",
+        "address": "Carretera de Mérida, Km. 558",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927238077",
+        "capacity": "48 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.373254, 39.436276]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ciudad Deportiva",
+        "type": "CafeBar",
+        "address": "Avenida del Brocense, s/n.",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927244211",
+        "capacity": "60 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371134, 39.464163]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "El Gran Café",
+        "type": "CafeBar",
+        "address": "Avenida San Pedro de Alcántara, 6",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "9.27249997E8",
+        "email": "elgrancafe@gmail.com",
+        "url": "http://www.elgrancafe.es",
+        "capacity": "48 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378998, 39.470827]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "El Pirata Bar",
+        "type": "CafeBar",
+        "address": "Calle General Ezponda, 2",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "9.2724873E8",
+        "email": "info@restauranteelpato.com",
+        "capacity": "45-50 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371732, 39.475365]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hospital San Pedro de Alcántara",
+        "type": "CafeBar",
+        "address": "Avenida de Pablo Naranjo, s/n",
+        "postalCode": "10002",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927243312",
+        "capacity": "80 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.367730, 39.465401]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Taberna de Santi",
+        "type": "CafeBar",
+        "address": "Calle Santa Joaquina de Vedruna, 11",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927220032",
+        "url": "http://www.latabernadesanti.com",
+        "capacity": "16 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.380213, 39.469926]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "La Teteria (Hotel la Bohême)",
+        "type": "CafeBar",
+        "address": "Plaza Mayor, 5",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "9.27217351E8",
+        "email": "contacto@hotellaboheme.com",
+        "url": "http://www.hotellaboheme.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.370977, 39.475737]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Medas La Estación",
+        "type": "CafeBar",
+        "address": "Estación de Ferrocaril Avenida de Alemania, s/n",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927217134",
+        "capacity": "28 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.385474, 39.460977]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Psicopompo",
+        "type": "CafeBar",
+        "address": "Plaza Marrón, 12",
+        "postalCode": "10003",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 666449314"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.375262, 39.472149]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Servicio al Viajero",
+        "type": "CafeBar",
+        "address": "Calle Túnez, 1",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927240162",
+        "capacity": "40 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.382619, 39.460001]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sal y Pimienta",
+        "type": "CafeBar",
+        "address": "Calle de Caupolicán. 1",
+        "postalCode": "10005",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "9.27216997E8",
+        "capacity": "80 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378097, 39.462741]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Burger King",
+        "type": "CafeBar",
+        "address": "Calle Gómez Becerra, 2",
+        "postalCode": "10001",
+        "locality": "Cáceres",
+        "country": "ES",
+        "telephone": "+34 927245464",
+        "email": "bkgomezbecerra@gmail.com",
+        "url": "http://www.burgerking.es",
+        "capacity": "80 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379284, 39.469851]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Burger King",
+        "address": "Calle Londres,1, Cáceres, 10005, ES",
+        "telephone": "+34 927231187",
+        "url": "http://www.burgerking.es",
+        "capacity": "100 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.388710, 39.468162]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Foodie",
+        "address": "Calle Donoso Cortés, 2, Cáceres, 10003, ES",
+        "telephone": "+34 686244000",
+        "email": "correobelleart@gmail.com"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.373502, 39.472306]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "McDonald's",
+        "address": "Ronda Norte-Montesol, Cáceres, 10005, ES",
+        "telephone": "+34 927629116",
+        "email": "caceres.276@mcdesp.com",
+        "capacity": "185 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.395200, 39.468475]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "New Golden",
+        "address": "Avenida Antonio Hurtado, 6, Cáceres, 10005, ES",
+        "telephone": "+34 927043273",
+        "email": "info@newgolden.es",
+        "url": "http://www.newgolden.es"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378558, 39.467618]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Burger King",
+        "address": "C/Emilio Cardenal Herrera-Esquina José de Espronceda, Cáceres, 10003, ES",
+        "telephone": "927236460",
+        "email": "bkmejostilla@tartagal.ws",
+        "url": "http://www.burgerking.es",
+        "capacity": "50 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.367992, 39.490807]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón Alcazaba",
+        "address": "Calle General Ezponda, 3, Cáceres, 10003, ES",
+        "telephone": "+34 927223663",
+        "capacity": "26 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372074, 39.475501]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón del Jamón",
+        "address": "Avenida Virgen de Guadalupe, 5, Cáceres, 10001, ES",
+        "telephone": "+34 927221017",
+        "capacity": "36 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379809, 39.471887]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón El Encinar",
+        "address": "Plaza Mayor, 6, Cáceres, 10003, ES",
+        "telephone": "+34 927248531",
+        "capacity": "110 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372225, 39.474770]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón La Dehesa",
+        "address": "Avenida de Badajoz, s/n, Cáceres, 10002, ES",
+        "telephone": "+34 927234269",
+        "capacity": "40 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.386109, 39.455114]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón Los Arcos",
+        "address": "Plaza Mayor, 22, Cáceres, 10003, ES",
+        "telephone": "+34 927245145",
+        "capacity": "28 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371178, 39.475556]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón Lo Nuestro",
+        "address": "C/ Duque, 10, Cáceres, 10003, ES",
+        "telephone": "927261187",
+        "url": "http://www.mesonlonuestro.es"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.380384, 39.471995]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón Más Cachito",
+        "address": "Calle San Juan de Dios, 3, Cáceres, 10001, ES",
+        "telephone": "+34 927216743",
+        "email": "hosteleriasolcha@hotmail.com",
+        "capacity": "16 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.380384, 39.471995]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón Orense",
+        "address": "Calle General Yagüe, 9, Cáceres, 10001, ES"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378900, 39.471210]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mesón Orense",
+        "address": "Calle General Yagüe, 9, Cáceres, 10001, ES",
+        "capacity": "48 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378782, 39.471502]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Domino's Pizza",
+        "address": "Avenida de Antonio Hurtado, 10, Cáceres, 10002, ES",
+        "telephone": "+34 927211333",
+        "email": "dominospizzacaceres@hotmail.com",
+        "url": "http://dominospizza.es",
+        "capacity": "28 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.378019, 39.467112]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Piccola Italia Ristorante Pizzeria",
+        "address": "Calle Córdoba, 16, Cáceres, 10005, ES",
+        "telephone": "927201145",
+        "url": "http://www.piccolaitalia.co/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.379871, 39.455142]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pizza Móvil",
+        "address": "Avenida de Alemania, 46, Cáceres, 10005, ES",
+        "telephone": "927629474",
+        "url": "http://www.pizzamovil.es"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.383217, 39.463216]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pizzería Teleremo",
+        "address": "Calle Pintores, 20, Cáceres, 10003, ES",
+        "telephone": "+34 927220838"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.372538, 39.474611]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Telepizza",
+        "address": "Plaza Mayor, 12, Cáceres, 10003, ES",
+        "telephone": "+34 927625625",
+        "email": "rigalpizzacc@wanadoo.es",
+        "url": "http://www.telepizza.es",
+        "capacity": "60 pax"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.371859, 39.475044]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Vadepizza",
+        "address": "Avda. Virgen de Guadalupe, 43, Cáceres, 10001, ES",
+        "telephone": "927629955-927626410"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-6.385699, 39.467502]
+      }
+    }
+  ]
+}
