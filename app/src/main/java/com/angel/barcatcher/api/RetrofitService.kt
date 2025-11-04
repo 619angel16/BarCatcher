@@ -53,12 +53,12 @@ interface RetrofitService {
                     context.resources.openRawResource(R.raw.apk)
                 keyStore.load(
                     pfxInputStream,
-                    "apk1234".toCharArray()
+                    "12345".toCharArray()
                 )
 
                 val keyManagerFactory =
                     KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
-                keyManagerFactory.init(keyStore, "apk1234".toCharArray())
+                keyManagerFactory.init(keyStore, "12345".toCharArray())
 
                 val trustManagerFactory =
                     TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
