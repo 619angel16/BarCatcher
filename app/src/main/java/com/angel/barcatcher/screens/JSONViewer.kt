@@ -133,19 +133,19 @@ fun BarJsonViewer(
 
 private fun createBarJsonString(bar: Cafebar): String {
     val jsonObj = JSONObject()
-    bar.longitude?.let { jsonObj.put("longitude", it) }
-    bar.latitude?.let { jsonObj.put("latitude", it) }
+    bar.location?.longitude.let { jsonObj.put("longitude", it) }
+    bar.location?.latitude.let { jsonObj.put("latitude", it) }
     jsonObj.put("name", bar.name)
     bar.url?.let { jsonObj.put("url", it) }
     bar.email?.let { jsonObj.put("email", it) }
-    jsonObj.put("tel", bar.tel)
+    jsonObj.put("tel", bar.phone)
     bar.capacity?.let { jsonObj.put("capacity", it) }
 
     val addressObj = JSONObject()
-    addressObj.put("streetAddress", bar.address_streetAddress)
-    addressObj.put("addressLocality", bar.address_addressLocality)
-    addressObj.put("addressCountry", bar.address_addressCountry)
-    addressObj.put("postalCode", bar.address_postalCode)
+    addressObj.put("streetAddress", bar.address.street)
+    addressObj.put("addressLocality", bar.address.locality)
+    addressObj.put("addressCountry", bar.address.country)
+    addressObj.put("postalCode", bar.address.postalCode)
     jsonObj.put("address", addressObj)
 
     val metadataObj = JSONObject()
@@ -160,19 +160,19 @@ private fun createBarJsonString(bar: Cafebar): String {
 
 private fun createBarJsonString(bar: Drinkbar): String {
     val jsonObj = JSONObject()
-    bar.longitude?.let { jsonObj.put("longitude", it) }
-    bar.latitude?.let { jsonObj.put("latitude", it) }
+    bar.location?.longitude.let { jsonObj.put("longitude", it) }
+    bar.location?.latitude.let { jsonObj.put("latitude", it) }
     jsonObj.put("name", bar.name)
     bar.url?.let { jsonObj.put("url", it) }
     bar.email?.let { jsonObj.put("email", it) }
-    jsonObj.put("tel", bar.tel)
+    jsonObj.put("tel", bar.phone)
     bar.capacity?.let { jsonObj.put("capacity", it) }
 
     val addressObj = JSONObject()
-    addressObj.put("streetAddress", bar.address_streetAddress)
-    addressObj.put("addressLocality", bar.address_addressLocality)
-    addressObj.put("addressCountry", bar.address_addressCountry)
-    addressObj.put("postalCode", bar.address_postalCode)
+    addressObj.put("streetAddress", bar.address.street)
+    addressObj.put("addressLocality", bar.address.locality)
+    addressObj.put("addressCountry", bar.address.country)
+    addressObj.put("postalCode", bar.address.postalCode)
     jsonObj.put("address", addressObj)
 
     val metadataObj = JSONObject()
