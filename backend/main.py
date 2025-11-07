@@ -1,6 +1,5 @@
 from init import create_app
 from config import config
-from db import db
 import os
 
 def main():

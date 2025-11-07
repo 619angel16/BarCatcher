@@ -1,15 +1,14 @@
 from flask import Flask
 from config import Config
 from routes import register_blueprints
-from db import db
 
 def create_app(config_class=Config):
     """Factory function to create Flask App"""
     app = Flask(__name__)
     app.config.from_object(config_class)
-    
+
     # Initialize extensions
-    initialize_extensions(app)
+    #initialize_extensions(app)
     
     # Registry paths and blueprints
     register_blueprints(app)
@@ -24,8 +23,6 @@ def create_app(config_class=Config):
 
 def initialize_extensions(app):
     """Initialize Flask Extensions"""
-    # Base de datos
-    #db.init_app(app)
     
     # Keycloak
     #init_keycloak(app)
