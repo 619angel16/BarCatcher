@@ -13,5 +13,5 @@ class CafedrinksService(BaseService[CafedrinksDTO]):
     def get_by_email(self, email : str) -> Optional[List[CafedrinksDTO]]:
         return self.repository.find_by_email(email)
     
-    def get_who_serves_food(self):
+    def get_who_serves_food(self) -> Optional[List[CafedrinksDTO]]:
         return self.repository.find_who_serves_food()

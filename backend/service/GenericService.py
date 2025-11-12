@@ -15,7 +15,7 @@ class BaseService(Generic[T]):
     def get_all(self, limit: Optional[int]) -> Optional[List[T]]:
         return self.repository.find_all(limit)  
     
-    def find_by_cercania(self, latitud, longitud, radio) -> Optional[List[T]]:
+    def get_by_cercania(self, latitud, longitud, radio) -> Optional[List[T]]:
         return self.repository.find_by_cercania(latitud, longitud, radio)
     
     def create(self, data: Dict[str, Any]) -> str:

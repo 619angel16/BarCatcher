@@ -57,7 +57,9 @@ class BaseRepository(Generic[T]):
         if isinstance(field_value, str):
             field_value = f"'{field_value}'"
         if isinstance(field_value, bool):
+            print("Entro")
             field_value = str(field_value).lower()
+            print(field_value)
 
         query = f"""
             FROM {self.collection_name} WHERE {field_name} = {field_value} LIMIT {limit}
@@ -66,8 +68,8 @@ class BaseRepository(Generic[T]):
         results = self.client.query_documents(query)
 
         if results and 'Results' in results:
-            for doc in results:
-                entidades = []
+            entidades = []
+            for doc in results['Results']:
                 if 'Id' not in doc and '@metadata' in doc:
                     doc['Id'] = doc['@metadata'].get('@id')
                 entidades.append(self.dto_class(**doc))
