@@ -160,7 +160,6 @@ fun MapBoxView(
             }
             if (hasLocationPermission.value) {
                 Column(Modifier.align(Alignment.BottomEnd)) {
-                    // Botón para ir a la ubicación actual
                     FloatingActionButton(
                         onClick = {
                             mapViewportState.transitionToFollowPuckState()
@@ -170,7 +169,6 @@ fun MapBoxView(
                     ) {
                         Icon(Icons.Default.LocationOn, contentDescription = "Mi ubicación")
                     }
-                    //Boton para escanear cercanías
                     FloatingActionButton(
                         onClick = {
                             locationProvider?.getLastLocation { result ->
@@ -214,7 +212,6 @@ fun MapBoxView(
                                     cafeRepository,
                                     drinkRepository
                                 )
-                                Log.wtf("BARS CHECK", bars.toString())
                                 Log.wtf("DATA HEATMAP?", getBarFeatures(bars).toString())
                                 geoJsonSource.data = GeoJSONData(getBarFeatures(bars))
                                 heatMode = !heatMode
@@ -308,28 +305,32 @@ fun getBarFeatures(bars: List<Bar>): List<Feature> {
     bars.forEach {
         when (it) {
             is Bar.Cafe -> {
-                if (it.data.location?.longitude != null && it.data.location.latitude != null) {
-                    val geometry =
-                        Point.fromLngLat(it.data.location.longitude, it.data.location.latitude)
-                    val properties = JsonObject().apply {
-                        addProperty("locality", it.data.address.locality)
-                        addProperty("country", it.data.address.country)
-                        addProperty("postalCode", it.data.address.postalCode)
+                if (it.data.location != null) {
+                    if (it.data.location.longitude != null && it.data.location.latitude != null) {
+                        val geometry =
+                            Point.fromLngLat(it.data.location.longitude, it.data.location.latitude)
+                        val properties = JsonObject().apply {
+                            addProperty("locality", it.data.address.locality)
+                            addProperty("country", it.data.address.country)
+                            addProperty("postalCode", it.data.address.postalCode)
+                        }
+                        listFeatures = listFeatures + Feature.fromGeometry(geometry, properties)
                     }
-                    listFeatures = listFeatures + Feature.fromGeometry(geometry, properties)
                 }
             }
 
             is Bar.Drink -> {
-                if (it.data.location?.longitude != null && it.data.location.latitude != null) {
-                    val geometry =
-                        Point.fromLngLat(it.data.location.longitude, it.data.location.latitude)
-                    val properties = JsonObject().apply {
-                        addProperty("locality", it.data.address.locality)
-                        addProperty("country", it.data.address.country)
-                        addProperty("postalCode", it.data.address.postalCode)
+                if (it.data.location != null) {
+                    if (it.data.location.longitude != null && it.data.location.latitude != null) {
+                        val geometry =
+                            Point.fromLngLat(it.data.location.longitude, it.data.location.latitude)
+                        val properties = JsonObject().apply {
+                            addProperty("locality", it.data.address.locality)
+                            addProperty("country", it.data.address.country)
+                            addProperty("postalCode", it.data.address.postalCode)
+                        }
+                        listFeatures = listFeatures + Feature.fromGeometry(geometry, properties)
                     }
-                    listFeatures = listFeatures + Feature.fromGeometry(geometry, properties)
                 }
             }
         }
@@ -366,19 +367,13 @@ suspend fun recoverAllBars(
 ): List<Bar> {
 
     return kotlinx.coroutines.coroutineScope {
-
-        val cafesDeferred = async(Dispatchers.IO) {
-            cafeRepository.getAllCafe()
-        }
-
-        val drinksDeferred = async(Dispatchers.IO) {
-            drinkRepository.getAllDrink()
-        }
-
+        val cafesDeferred = async { cafeRepository.getAllCafe() }
+        val drinksDeferred = async { drinkRepository.getAllDrink() }
         val cafes = cafesDeferred.await().body()?.Results?.map { Bar.Cafe(it) } ?: emptyList()
         val drinks =
             drinksDeferred.await().body()?.Results?.map { Bar.Drink(it) } ?: emptyList()
         cafes + drinks
+
     }
 }
 
