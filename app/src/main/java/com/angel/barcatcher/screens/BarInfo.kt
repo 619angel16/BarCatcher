@@ -136,14 +136,14 @@ fun InfoCard(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = bar.address_streetAddress + ", " + bar.address_addressLocality + ", " + bar.address_addressCountry,
+                            text = bar.address.street + ", " + bar.address.locality + ", " + bar.address.country,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
                     // Teléfono (si está disponible)
-                    if (bar.tel?.isNotEmpty() == true) {
+                    if (bar.phone?.isNotEmpty() == true) {
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -157,7 +157,7 @@ fun InfoCard(
                             Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
-                                text = bar.tel,
+                                text = bar.phone,
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -277,14 +277,14 @@ fun InfoCard(
                         Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
-                            text = bar.address_streetAddress + ", " + bar.address_addressLocality + ", " + bar.address_addressCountry,
+                            text = bar.address.street + ", " + bar.address.locality + ", " + bar.address.country,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
 
                     // Teléfono (si está disponible)
-                    if (bar.tel?.isNotEmpty() == true) {
+                    if (bar.phone?.isNotEmpty() == true) {
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -297,7 +297,7 @@ fun InfoCard(
 
                             Spacer(modifier = Modifier.width(8.dp))
 
-                            bar.tel.let {
+                            bar.phone.let {
                                 Text(
                                     text = it,
                                     style = MaterialTheme.typography.bodyMedium,

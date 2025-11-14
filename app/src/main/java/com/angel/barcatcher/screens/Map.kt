@@ -214,6 +214,7 @@ fun MapBoxView(
                                     cafeRepository,
                                     drinkRepository
                                 )
+                                Log.wtf("BARS CHECK", bars.toString())
                                 Log.wtf("DATA HEATMAP?", getBarFeatures(bars).toString())
                                 geoJsonSource.data = GeoJSONData(getBarFeatures(bars))
                                 heatMode = !heatMode
@@ -248,12 +249,12 @@ fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
         scannedBars.forEach {
             when (it) {
                 is Bar.Cafe -> {
-                    if (it.data.longitude != null && it.data.latitude != null) {
+                    if (it.data.location?.longitude != null && it.data.location.latitude != null) {
                         val bar = it
                         PointAnnotation(
                             point = Point.fromLngLat(
-                                it.data.longitude,
-                                it.data.latitude
+                                it.data.location.longitude,
+                                it.data.location.latitude
                             )
                         ) {
                             iconImage = cafeIcon
@@ -273,13 +274,13 @@ fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
                 }
 
                 is Bar.Drink -> {
-                    if (it.data.longitude != null && it.data.latitude != null) {
+                    if (it.data.location?.longitude != null && it.data.location.latitude != null) {
 
                         val bar = it
                         PointAnnotation(
                             point = Point.fromLngLat(
-                                it.data.longitude,
-                                it.data.latitude
+                                it.data.location.longitude,
+                                it.data.location.latitude
                             )
                         ) {
                             iconImage = drinkIcon
@@ -307,24 +308,26 @@ fun getBarFeatures(bars: List<Bar>): List<Feature> {
     bars.forEach {
         when (it) {
             is Bar.Cafe -> {
-                if (it.data.longitude != null && it.data.latitude != null) {
-                    val geometry = Point.fromLngLat(it.data.longitude, it.data.latitude)
+                if (it.data.location?.longitude != null && it.data.location.latitude != null) {
+                    val geometry =
+                        Point.fromLngLat(it.data.location.longitude, it.data.location.latitude)
                     val properties = JsonObject().apply {
-                        addProperty("name", it.data.address_addressLocality)
-                        addProperty("name", it.data.address_addressCountry)
-                        addProperty("name", it.data.address_postalCode)
+                        addProperty("locality", it.data.address.locality)
+                        addProperty("country", it.data.address.country)
+                        addProperty("postalCode", it.data.address.postalCode)
                     }
                     listFeatures = listFeatures + Feature.fromGeometry(geometry, properties)
                 }
             }
 
             is Bar.Drink -> {
-                if (it.data.longitude != null && it.data.latitude != null) {
-                    val geometry = Point.fromLngLat(it.data.longitude, it.data.latitude)
+                if (it.data.location?.longitude != null && it.data.location.latitude != null) {
+                    val geometry =
+                        Point.fromLngLat(it.data.location.longitude, it.data.location.latitude)
                     val properties = JsonObject().apply {
-                        addProperty("name", it.data.address_addressLocality)
-                        addProperty("name", it.data.address_addressCountry)
-                        addProperty("name", it.data.address_postalCode)
+                        addProperty("locality", it.data.address.locality)
+                        addProperty("country", it.data.address.country)
+                        addProperty("postalCode", it.data.address.postalCode)
                     }
                     listFeatures = listFeatures + Feature.fromGeometry(geometry, properties)
                 }

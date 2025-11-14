@@ -13,7 +13,7 @@ class barDrinkRepository (service: RetrofitService) {
     suspend fun getAllDrink(): Response<DrinkBarRemoteList> = source.getAllBarDrink()
 
     private fun buildQuery(lat: Double, long: Double): String {
-        return "from \"Drinkbars\" where spatial.within(spatial.point(latitude, longitude), spatial.circle(0.28, $lat, $long))"
+        return "from \"Drinkbars\" where spatial.within(spatial.point(location.latitude, location.longitude), spatial.circle(0.28, $lat, $long))"
     }
     suspend fun getDrinkByCoords(lat: Double, long: Double): Response<DrinkBarRemoteList> =
         source.getDrinkByCoords(buildQuery(lat, long))
