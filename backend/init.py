@@ -1,12 +1,15 @@
 from flask import Flask
 from config import Config
 from routes import register_blueprints
+from flask_cors import CORS
 
 def create_app(config_class=Config):
     """Factory function to create Flask App"""
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    #Habilitación de CORS
+    CORS(app, resources={r"/*": {"origins": "*"}}) # Permite CORS para todas las rutas y orígenes
     # Initialize extensions
     #initialize_extensions(app)
     

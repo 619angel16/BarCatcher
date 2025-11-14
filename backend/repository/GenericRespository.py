@@ -81,15 +81,15 @@ class BaseRepository(Generic[T]):
     def find_by_cercania(self, latitud: float, longitud: float, radio: float) -> Optional[List[T]]:
        
         query = f"""FROM {self.collection_name} WHERE spatial.within(
-            spatial.point(location.longitude, location.latitude),
-            spatial.circle({radio}, {latitud}, {longitud}, 'kilometers')
+            spatial.point(location.latitude, location.longitude),
+            spatial.circle({radio}, {latitud}, {longitud})
         )"""
 
         results = self.client.query_documents(query)
 
         if results and 'Results' in results:
             entidades = []
-            for doc in results:
+            for doc in results['Results']:
                 if 'Id' not in doc and '@metadata' in doc:
                     doc['Id'] = doc['@metadata'].get('@id')
                 entidades.append(self.dto_class(**doc))

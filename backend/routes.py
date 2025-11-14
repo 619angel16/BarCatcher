@@ -133,8 +133,9 @@ def register_basic_routes(app):
         try:
             latitud = request.args.get('latitud') # Query Param
             longitud = request.args.get('longitud') # Query Param
-        
-            cercanos = drinkbar_service.get_by_cercania(latitud, longitud)
+            radio = request.args.get('radio')
+
+            cercanos = drinkbar_service.get_by_cercania(float(latitud), float(longitud), float(radio))
             return Response(
                 json.dumps([cercano.model_dump() for cercano in cercanos]),
                 status = 200,
@@ -212,7 +213,7 @@ def register_basic_routes(app):
         except Exception as e :
             return jsonify({"error", str(e)}), 500
         
-    @app.route('/api/cafebars/cercano/')
+    @app.route('/api/cafebars/cercano')
     def cafebars_cercanos():
         try:
             latitud = request.args.get('latitud') # Query Param
