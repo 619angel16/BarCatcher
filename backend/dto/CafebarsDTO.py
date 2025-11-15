@@ -6,7 +6,6 @@ from dto.LocationDTO import LocationDTO
 from dto.MetadataDTO import MetadataDTO
 
 class CafebarsDTO(BaseDrinksDTO):
-    id: MetadataDTO = Field(None, alias = "@id")
     name: str
     location: LocationDTO
     url: Optional[str] = None
