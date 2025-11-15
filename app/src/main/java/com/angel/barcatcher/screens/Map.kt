@@ -207,6 +207,7 @@ fun MapBoxView(
                 Column(Modifier.align(Alignment.BottomStart)) {
                     FloatingActionButton(
                         onClick = {
+                            Log.wtf("HEAT BUTTON", "HEAT MAP CLICKED!!!")
                             coroutineScope.launch {
                                 val bars = recoverAllBars(
                                     cafeRepository,
@@ -347,16 +348,16 @@ suspend fun scanBars(
     return kotlinx.coroutines.coroutineScope {
 
         val cafesDeferred = async(Dispatchers.IO) {
-            cafeRepository.getCafeByCoords(userPos.latitude, userPos.longitude)
+            cafeRepository.getCafeByCoords(userPos.latitude, userPos.longitude, 0.28f)
         }
 
         val drinksDeferred = async(Dispatchers.IO) {
-            drinkRepository.getDrinkByCoords(userPos.latitude, userPos.longitude)
+            drinkRepository.getDrinkByCoords(userPos.latitude, userPos.longitude, 0.28f)
         }
 
-        val cafes = cafesDeferred.await().body()?.Results?.map { Bar.Cafe(it) } ?: emptyList()
+        val cafes = cafesDeferred.await().body()?.map { Bar.Cafe(it) } ?: emptyList()
         val drinks =
-            drinksDeferred.await().body()?.Results?.map { Bar.Drink(it) } ?: emptyList()
+            drinksDeferred.await().body()?.map { Bar.Drink(it) } ?: emptyList()
         cafes + drinks
     }
 }

@@ -1,93 +1,66 @@
 package com.angel.barcatcher.api
 
 import android.content.Context
-import android.util.Log
-import com.angel.barcatcher.R
 import com.angel.barcatcher.api.Model.CafeBarRemoteList
 import com.angel.barcatcher.api.Model.CafeBarRemoteResult
+import com.angel.barcatcher.api.Model.Cafebar
 import com.angel.barcatcher.api.Model.DrinkBarRemoteList
 import com.angel.barcatcher.api.Model.DrinkBarRemoteResult
+import com.angel.barcatcher.api.Model.Drinkbar
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
-import java.security.KeyStore
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.KeyManagerFactory
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 interface RetrofitService {
 
 
-    @GET("docs")
-    suspend fun getBarCafe(@Query("id") id: String): Response<CafeBarRemoteResult>
+    @GET("cafebars/campo?nombre=name&valor=")
+    suspend fun getBarCafe(@Path("id") id: String): Response<CafeBarRemoteResult>
 
-    @GET("streams/queries?query=from+\"Cafebars\"")
+    @GET("cafebars")
     suspend fun getAllBarCafe(): Response<CafeBarRemoteList>
 
-    @GET("docs")
-    suspend fun getBarDrink(@Query("id") id: String): Response<DrinkBarRemoteResult>
+    @GET("drinkbars/campo?nombre=name&valor=")
+    suspend fun getBarDrink(@Path("id") id: String): Response<DrinkBarRemoteResult>
 
-    @GET("streams/queries?query=from+\"Drinkbars\"")
+    @GET("drinkbars")
     suspend fun getAllBarDrink(): Response<DrinkBarRemoteList>
 
-    @GET("streams/queries")
-    suspend fun getCafeByCoords(@Query("query") query: String): Response<CafeBarRemoteList>
+    @GET("cafebars/cercano?")
+    suspend fun getCafeByCoords(
+        @Query("latitud") latitud: Double,
+        @Query("longitud") longitud: Double,
+        @Query("radio") radio: Float
+    ): Response<List<Cafebar>>
 
-    @GET("streams/queries")
-    suspend fun getDrinkByCoords(@Query("query") query: String): Response<DrinkBarRemoteList>
+    @GET("drinkbars/cercano?")
+    suspend fun getDrinkByCoords(
+        @Query("latitud") latitud: Double,
+        @Query("longitud") longitud: Double,
+        @Query("radio") radio: Float
+    ): Response<List<Drinkbar>>
 
     object RetrofitServiceFactory {
-        private fun generateSecureOkHttpClient(context: Context): OkHttpClient {
-            val httpClientBuilder = OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-
-            try {
-                val keyStore = KeyStore.getInstance("PKCS12")
-                val pfxInputStream =
-                    context.resources.openRawResource(R.raw.apk)
-                keyStore.load(
-                    pfxInputStream,
-                    "12345".toCharArray()
-                )
-
-                val keyManagerFactory =
-                    KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm())
-                keyManagerFactory.init(keyStore, "12345".toCharArray())
-
-                val trustManagerFactory =
-                    TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-                trustManagerFactory.init(null as KeyStore?) // null = confía en sistema operativo
-
-                val sslContext = SSLContext.getInstance("TLS")
-                sslContext.init(
-                    keyManagerFactory.keyManagers,
-                    trustManagerFactory.trustManagers,
-                    null
-                )
-
-                val trustManager = trustManagerFactory.trustManagers
-                    .first { it is X509TrustManager } as X509TrustManager
-
-                return httpClientBuilder
-                    .sslSocketFactory(sslContext.socketFactory, trustManager)
-                    .build()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("RetrofitServiceFactory", "Error SSL: ${e.message}")
-                return httpClientBuilder.build()
-            }
+        private val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
         }
+
+        private val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build()
 
         fun makeRetrofitService(context: Context): RetrofitService {
             return Retrofit.Builder()
-                .baseUrl("https://a.free.apeaorre.ravendb.cloud/databases/Bar_CC/")
-                .client(generateSecureOkHttpClient(context))
+                .baseUrl("http://192.168.1.133:5000/api/")
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitService::class.java)
         }
