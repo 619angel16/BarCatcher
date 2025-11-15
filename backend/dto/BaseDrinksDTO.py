@@ -1,11 +1,11 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, AliasChoices
 from typing import Optional
 from dto.AddressDTO import AddressDTO
 from dto.LocationDTO import LocationDTO
 from dto.MetadataDTO import MetadataDTO
 
 class BaseDrinksDTO(BaseModel):
-    id: MetadataDTO = Field(None, alias = "@id")
+    id: str = Field(..., validation_alias=AliasChoices("@id", "Id"))
     name: str
     location: LocationDTO
     url: Optional[str] = None
