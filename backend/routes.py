@@ -218,7 +218,7 @@ def register_basic_routes(app):
             latitud = request.args.get('latitud') # Query Param
             longitud = request.args.get('longitud') # Query Param
         
-            cercanos = cafebar_service.get_by_cercania(latitud, longitud)
+            cercanos = cafebar_service.get_by_cercania(float(latitud), float(longitud), float(0.28))
             return Response(
                 json.dumps([cercano.model_dump() for cercano in cercanos]),
                 status = 200,
