@@ -32,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import org.json.JSONObject
+import retrofit2.Response
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
@@ -41,15 +42,15 @@ fun BarJsonViewer(
     modifier: Modifier = Modifier,
     maxHeight: Int? = 400
 ) {
-    var bar by remember { mutableStateOf<List<Cafebar>?>(null) }
+    var bar by remember { mutableStateOf<Response<Cafebar>?>(null) }
     if (ID.contains("Cafebars")) {
         LaunchedEffect(true) {
-            val query = GlobalScope.async(Dispatchers.IO) { cafeRep.getCafe(ID) }
-            bar = query.await().body()?.Results
+            val query = GlobalScope.async(Dispatchers.IO) { cafeRep.getCafe(ID, "algarve") }
+            bar = query.await()
         }
     }
     if (bar != null) {
-        val jsonString = createBarJsonString(bar!!.first())
+        val jsonString = createBarJsonString(bar!!.body()!!)
 
         val contentModifier = if (maxHeight != null) {
             Modifier
@@ -89,15 +90,15 @@ fun BarJsonViewer(
     modifier: Modifier = Modifier,
     maxHeight: Int? = 400
 ) {
-    var bar by remember { mutableStateOf<List<Drinkbar>?>(null) }
+    var bar by remember { mutableStateOf<Response<Drinkbar>?>(null) }
     if (ID.contains("Drinkbars")) {
         LaunchedEffect(true) {
-            val query = GlobalScope.async(Dispatchers.IO) { drinkRep.getDrink(ID) }
-            bar = query.await().body()?.Results
+            val query = GlobalScope.async(Dispatchers.IO) { drinkRep.getDrink(ID, "algarve") }
+            bar = query.await()
         }
 
         if (bar != null) {
-            val jsonString = createBarJsonString(bar!!.first())
+            val jsonString = createBarJsonString(bar!!.body()!!)
 
             val contentModifier = if (maxHeight != null) {
                 Modifier

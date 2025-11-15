@@ -1,7 +1,5 @@
 package com.angel.barcatcher.repository
 
-import com.angel.barcatcher.api.Model.DrinkBarRemoteList
-import com.angel.barcatcher.api.Model.DrinkBarRemoteResult
 import com.angel.barcatcher.api.Model.Drinkbar
 import com.angel.barcatcher.api.RetrofitService
 import retrofit2.Response
@@ -9,18 +7,14 @@ import retrofit2.Response
 class barDrinkRepository(service: RetrofitService) {
     var source = service
 
-    suspend fun getDrink(ID: String): Response<DrinkBarRemoteResult> = source.getBarDrink(ID)
+    suspend fun getDrink(campo: String, valor: String): Response<Drinkbar> =
+        source.getBarDrink(campo, valor)
 
-    suspend fun getAllDrink(): Response<DrinkBarRemoteList> = source.getAllBarDrink()
-
-    private fun buildQuery(lat: Double, long: Double): String {
-        return "latitud=$lat&longitud=$long&radio=0.28"
-    }
+    suspend fun getAllDrink(): Response<List<Drinkbar>> = source.getAllBarDrink()
 
     suspend fun getDrinkByCoords(
         lat: Double,
-        long: Double,
-        radius: Float
+        long: Double
     ): Response<List<Drinkbar>> =
-        source.getDrinkByCoords(lat, long, radius)
+        source.getDrinkByCoords(lat, long)
 }

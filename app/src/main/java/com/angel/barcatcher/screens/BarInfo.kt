@@ -44,6 +44,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import retrofit2.Response
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
@@ -55,25 +56,21 @@ fun BarInfo(
 ) {
     Log.wtf("ID recuperado", id)
     if (id.contains("Cafebar", true)) {
-        var bar by remember { mutableStateOf<List<Cafebar>?>(null) }
+        var bar by remember { mutableStateOf<Response<Cafebar>?>(null) }
         LaunchedEffect(id) {
-            val query = GlobalScope.async(Dispatchers.IO) { cafeBarRep.getCafe(id) }
-            Log.wtf("Query result", query.await().body()!!.Results.toString())
-            bar = query.await().body()?.Results
+            val query = GlobalScope.async(Dispatchers.IO) { cafeBarRep.getCafe(id, "Valdepizza") }
+            Log.wtf("Query result", query.await().body()!!.toString())
+            bar = query.await()
         }
-        if (bar != null) {
-            InfoCard(bar!!.first(), navController)
-        }
+        bar?.let { InfoCard(it.body()!!, navController) }
     } else if (id.contains("Drinkbar", true)) {
-        var bar by remember { mutableStateOf<List<Drinkbar>?>(null) }
+        var bar by remember { mutableStateOf<Response<Drinkbar>?>(null) }
         LaunchedEffect(id) {
-            val query = GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrink(id) }
-            Log.wtf("Query result", query.await().body()!!.Results.toString())
-            bar = query.await().body()?.Results
+            val query = GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrink(id, "Algarve") }
+            Log.wtf("Query result", query.await().body()!!.toString())
+            bar = query.await()
         }
-        if (bar != null) {
-            InfoCard(bar!!.first(), navController)
-        }
+        bar?.let { InfoCard(it.body()!!, navController) }
     }
 }
 

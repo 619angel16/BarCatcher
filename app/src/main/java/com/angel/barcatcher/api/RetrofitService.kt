@@ -1,11 +1,8 @@
 package com.angel.barcatcher.api
 
 import android.content.Context
-import com.angel.barcatcher.api.Model.CafeBarRemoteList
-import com.angel.barcatcher.api.Model.CafeBarRemoteResult
+import com.angel.barcatcher.api.Model.Bar
 import com.angel.barcatcher.api.Model.Cafebar
-import com.angel.barcatcher.api.Model.DrinkBarRemoteList
-import com.angel.barcatcher.api.Model.DrinkBarRemoteResult
 import com.angel.barcatcher.api.Model.Drinkbar
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,30 +17,30 @@ import java.util.concurrent.TimeUnit
 interface RetrofitService {
 
 
-    @GET("cafebars/campo?nombre=name&valor=")
-    suspend fun getBarCafe(@Path("id") id: String): Response<CafeBarRemoteResult>
+    @GET("cafebars/campo")
+    suspend fun getBarCafe(@Query("nombre") campo: String,
+                            @Query("valor") valor: String): Response<Cafebar>
 
     @GET("cafebars")
-    suspend fun getAllBarCafe(): Response<CafeBarRemoteList>
+    suspend fun getAllBarCafe(): Response<List<Cafebar>>
 
-    @GET("drinkbars/campo?nombre=name&valor=")
-    suspend fun getBarDrink(@Path("id") id: String): Response<DrinkBarRemoteResult>
+    @GET("drinkbars/campo")
+    suspend fun getBarDrink(@Query("nombre") campo: String,
+                            @Query("valor") valor: String): Response<Drinkbar>
 
     @GET("drinkbars")
-    suspend fun getAllBarDrink(): Response<DrinkBarRemoteList>
+    suspend fun getAllBarDrink(): Response<List<Drinkbar>>
 
     @GET("cafebars/cercano?")
     suspend fun getCafeByCoords(
         @Query("latitud") latitud: Double,
-        @Query("longitud") longitud: Double,
-        @Query("radio") radio: Float
+        @Query("longitud") longitud: Double
     ): Response<List<Cafebar>>
 
     @GET("drinkbars/cercano?")
     suspend fun getDrinkByCoords(
         @Query("latitud") latitud: Double,
-        @Query("longitud") longitud: Double,
-        @Query("radio") radio: Float
+        @Query("longitud") longitud: Double
     ): Response<List<Drinkbar>>
 
     object RetrofitServiceFactory {

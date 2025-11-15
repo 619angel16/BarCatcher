@@ -348,11 +348,11 @@ suspend fun scanBars(
     return kotlinx.coroutines.coroutineScope {
 
         val cafesDeferred = async(Dispatchers.IO) {
-            cafeRepository.getCafeByCoords(userPos.latitude, userPos.longitude, 0.28f)
+            cafeRepository.getCafeByCoords(userPos.latitude, userPos.longitude)
         }
 
         val drinksDeferred = async(Dispatchers.IO) {
-            drinkRepository.getDrinkByCoords(userPos.latitude, userPos.longitude, 0.28f)
+            drinkRepository.getDrinkByCoords(userPos.latitude, userPos.longitude)
         }
 
         val cafes = cafesDeferred.await().body()?.map { Bar.Cafe(it) } ?: emptyList()
@@ -370,9 +370,9 @@ suspend fun recoverAllBars(
     return kotlinx.coroutines.coroutineScope {
         val cafesDeferred = async { cafeRepository.getAllCafe() }
         val drinksDeferred = async { drinkRepository.getAllDrink() }
-        val cafes = cafesDeferred.await().body()?.Results?.map { Bar.Cafe(it) } ?: emptyList()
+        val cafes = cafesDeferred.await().body()?.map { Bar.Cafe(it) } ?: emptyList()
         val drinks =
-            drinksDeferred.await().body()?.Results?.map { Bar.Drink(it) } ?: emptyList()
+            drinksDeferred.await().body()?.map { Bar.Drink(it) } ?: emptyList()
         cafes + drinks
 
     }
