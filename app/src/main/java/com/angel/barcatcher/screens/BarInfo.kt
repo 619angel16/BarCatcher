@@ -1,5 +1,7 @@
 package com.angel.barcatcher.screens
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.angel.barcatcher.R
 import com.angel.barcatcher.api.Model.Cafebar
@@ -49,6 +52,7 @@ import retrofit2.Response
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun BarInfo(
+    context: Context,
     navController: NavController,
     id: String,
     cafeBarRep: barCafeRepository,
@@ -58,24 +62,25 @@ fun BarInfo(
     if (id.contains("Cafebar", true)) {
         var bar by remember { mutableStateOf<Response<Cafebar>?>(null) }
         LaunchedEffect(id) {
-            val query = GlobalScope.async(Dispatchers.IO) { cafeBarRep.getCafe(id, "Valdepizza") }
+            val query = GlobalScope.async(Dispatchers.IO) { cafeBarRep.getCafe("id", id) }
             Log.wtf("Query result", query.await().body()!!.toString())
             bar = query.await()
         }
-        bar?.let { InfoCard(it.body()!!, navController) }
+        bar?.let { InfoCard(context, it.body()!!, navController) }
     } else if (id.contains("Drinkbar", true)) {
         var bar by remember { mutableStateOf<Response<Drinkbar>?>(null) }
         LaunchedEffect(id) {
-            val query = GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrink(id, "Algarve") }
+            val query = GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrink("id", id) }
             Log.wtf("Query result", query.await().body()!!.toString())
             bar = query.await()
         }
-        bar?.let { InfoCard(it.body()!!, navController) }
+        bar?.let { InfoCard(context, it.body()!!, navController) }
     }
 }
 
 @Composable
 fun InfoCard(
+    context: Context,
     bar: Cafebar,
     navController: NavController
 ) {
@@ -95,7 +100,7 @@ fun InfoCard(
             )
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                // Imagen del bar cafe
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -108,11 +113,11 @@ fun InfoCard(
                     )
                 }
 
-                // Contenido de la tarjeta
+
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    // Nombre del bar cafe
+
                     Text(
                         text = bar.name,
                         style = MaterialTheme.typography.headlineSmall,
@@ -121,7 +126,7 @@ fun InfoCard(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    // Dirección
+
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = painterResource(android.R.drawable.ic_dialog_map),
@@ -139,7 +144,7 @@ fun InfoCard(
                         )
                     }
 
-                    // Teléfono (si está disponible)
+
                     if (bar.phone?.isNotEmpty() == true) {
                         Spacer(modifier = Modifier.height(4.dp))
 
@@ -162,7 +167,7 @@ fun InfoCard(
                     }
 
                     // Descripción
-                    //Inicio bloque de información
+
                     if (bar.capacity?.isNotEmpty() == true) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -185,17 +190,27 @@ fun InfoCard(
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
-                //Fin bloque de información
+
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Botones de acción
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
                     //Botón compartir
-                    TextButton(onClick = { /* Compartir */ }) {
+                    TextButton(onClick = {
+//                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+//                            putExtra(
+//                                Intent.EXTRA_TEXT,
+//                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
+//                            )
+//                            type = "text/plain"
+//                        }
+//                        val shareIntent = Intent.createChooser(sendIntent, null)
+//                        startActivity(context, shareIntent, null)
+                    }) {
                         Text("Compartir")
                     }
                     //Botón Ver JSON
@@ -218,6 +233,7 @@ fun InfoCard(
 
 @Composable
 fun InfoCard(
+    context: Context,
     bar: Drinkbar, navController: NavController
 ) {
     Column(
@@ -280,7 +296,7 @@ fun InfoCard(
                         )
                     }
 
-                    // Teléfono (si está disponible)
+                    // Teléfono
                     if (bar.phone?.isNotEmpty() == true) {
                         Spacer(modifier = Modifier.height(4.dp))
 
@@ -319,12 +335,22 @@ fun InfoCard(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Botones de acción
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
-                        TextButton(onClick = { /* Compartir */ }) {
+                        TextButton(onClick = {
+//                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+//                                putExtra(
+//                                    Intent.EXTRA_TEXT,
+//                                    "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
+//                                )
+//                                type = "text/plain"
+//                            }
+//                            val shareIntent = Intent.createChooser(sendIntent, null)
+//                            startActivity(context, shareIntent, null)
+                        }) {
                             Text("Compartir")
                         }
 

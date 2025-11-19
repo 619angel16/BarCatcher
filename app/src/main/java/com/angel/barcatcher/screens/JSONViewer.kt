@@ -152,8 +152,6 @@ private fun createBarJsonString(bar: Cafebar): String {
     val metadataObj = JSONObject()
     metadataObj.put("ID", bar.metadata.id)
     metadataObj.put("Collection", bar.metadata.collection)
-    metadataObj.put("Last Modified", bar.metadata.lastModified)
-    metadataObj.put("Change Vector", bar.metadata.changeVector)
     jsonObj.put("@metadata", metadataObj)
 
     return jsonObj.toString(4)
@@ -179,8 +177,6 @@ private fun createBarJsonString(bar: Drinkbar): String {
     val metadataObj = JSONObject()
     metadataObj.put("ID", bar.metadata.id)
     metadataObj.put("Collection", bar.metadata.collection)
-    metadataObj.put("Last Modified", bar.metadata.lastModified)
-    metadataObj.put("Change Vector", bar.metadata.changeVector)
     jsonObj.put("@metadata", metadataObj)
 
     return jsonObj.toString(4)

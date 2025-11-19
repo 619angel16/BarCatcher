@@ -273,7 +273,6 @@ fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
 
                 is Bar.Drink -> {
                     if (it.data.location?.longitude != null && it.data.location.latitude != null) {
-
                         val bar = it
                         PointAnnotation(
                             point = Point.fromLngLat(

@@ -42,6 +42,7 @@ fun AppNavigation(
             val fullId = "$type/$barID"
 
             BarInfo(
+                context,
                 navController,
                 fullId,
                 cafeBar,
