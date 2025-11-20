@@ -15,6 +15,10 @@ class barCafeRepository(service: RetrofitService) {
     suspend fun getCafeByCoords(lat: Double, long: Double): Response<List<Cafebar>> =
         source.getCafeByCoords(lat, long)
 
+    suspend fun getCafebarByMetadataId(
+        fieldName: String = "metadata.id",
+        fieldValue: String
+    ): Response<List<Cafebar>> =
+        source.getCafebarByMetadataId(fieldName, fieldValue)
 
-    //TODO IMPL suspend fun getCafeByCoords(lat: Float, long : Float): CafeBarRemoteResult = source.getBarCafe()
 }

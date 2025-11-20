@@ -2,6 +2,7 @@ package com.angel.barcatcher.navigation
 
 import BarJsonViewer
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost

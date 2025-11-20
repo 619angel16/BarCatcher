@@ -12,6 +12,13 @@ class barDrinkRepository(service: RetrofitService) {
 
     suspend fun getAllDrink(): Response<List<Drinkbar>> = source.getAllBarDrink()
 
+    suspend fun getDrinkbarByMetadataId(
+        fieldName: String = "metadata.id",
+        fieldValue: String
+    ): Response<List<Drinkbar>> =
+        source.getDrinkbarByMetadataId(fieldName, fieldValue)
+
+
     suspend fun getDrinkByCoords(
         lat: Double,
         long: Double

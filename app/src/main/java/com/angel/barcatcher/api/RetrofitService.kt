@@ -21,6 +21,18 @@ interface RetrofitService {
     suspend fun getBarCafe(@Query("nombre") campo: String,
                             @Query("valor") valor: String): Response<Cafebar>
 
+    @GET("drinkbars/campo")
+    suspend fun getDrinkbarByMetadataId(
+        @Query("nombre") fieldName: String = "metadata.id",
+        @Query("valor") fieldValue: String
+    ): Response<List<Drinkbar>>
+
+    @GET("cafebars/campo")
+    suspend fun getCafebarByMetadataId(
+        @Query("nombre") fieldName: String = "metadata.id",
+        @Query("valor") fieldValue: String
+    ): Response<List<Cafebar>>
+
     @GET("cafebars")
     suspend fun getAllBarCafe(): Response<List<Cafebar>>
 
@@ -56,7 +68,7 @@ interface RetrofitService {
 
         fun makeRetrofitService(context: Context): RetrofitService {
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.133:5000/api/")
+                .baseUrl("http://158.49.191.183:5000/api/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitService::class.java)

@@ -2,19 +2,36 @@ package com.angel.barcatcher.screens
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,12 +41,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.angel.barcatcher.R
 import com.angel.barcatcher.api.Model.Bar
+import com.angel.barcatcher.api.Model.Cafebar
+import com.angel.barcatcher.api.Model.Drinkbar
 import com.angel.barcatcher.navigation.AppScreens
 import com.angel.barcatcher.repository.barCafeRepository
 import com.angel.barcatcher.repository.barDrinkRepository
@@ -48,17 +71,22 @@ import com.mapbox.maps.MapboxDelicateApi
 import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
+import com.mapbox.maps.extension.compose.annotation.ViewAnnotation
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
 import com.mapbox.maps.extension.compose.annotation.rememberIconImage
 import com.mapbox.maps.extension.compose.style.BooleanValue
 import com.mapbox.maps.extension.compose.style.layers.generated.HeatmapLayer
 import com.mapbox.maps.extension.compose.style.sources.GeoJSONData
 import com.mapbox.maps.extension.compose.style.sources.generated.rememberGeoJsonSourceState
+import com.mapbox.maps.plugin.Plugin
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.viewannotation.geometry
+import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -80,6 +108,7 @@ fun MapBoxView(
         generateId = BooleanValue(true)
     }
     var heatMode by remember { mutableStateOf(true) }
+
     var scannedBars by remember { mutableStateOf<List<Bar>>(emptyList()) }
 
     val request = LocationProviderRequest.Builder()
@@ -156,7 +185,7 @@ fun MapBoxView(
                     HeatmapLayer(layerId = "heatMapLayer", sourceState = geoJsonSource)
                 }
 
-                PrintPoints(scannedBars, navController)
+                PrintPoints(scannedBars, context, navController)
             }
             if (hasLocationPermission.value) {
                 Column(Modifier.align(Alignment.BottomEnd)) {
@@ -202,12 +231,10 @@ fun MapBoxView(
                             contentDescription = "Scan"
                         )
                     }
-
                 }
                 Column(Modifier.align(Alignment.BottomStart)) {
                     FloatingActionButton(
                         onClick = {
-                            Log.wtf("HEAT BUTTON", "HEAT MAP CLICKED!!!")
                             coroutineScope.launch {
                                 val bars = recoverAllBars(
                                     cafeRepository,
@@ -234,7 +261,8 @@ fun MapBoxView(
 }
 
 @Composable
-fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
+fun PrintPoints(scannedBars: List<Bar>, context: Context, navController: NavController) {
+
     val cafeIcon = rememberIconImage(
         key = "cafeIcon",
         painter = painterResource(R.drawable.baseline_sports_bar_24)
@@ -243,12 +271,46 @@ fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
         key = "drinkIcon",
         painter = painterResource(R.drawable.outline_local_bar_24)
     )
+    var vannotVisibility by remember { mutableStateOf(true) }
+
+    var vannotLong by remember { mutableStateOf(0.0) }
+
+    var vannotLat by remember { mutableStateOf(0.0) }
+
+    var vannotBar by remember { mutableStateOf<Bar?>(null) }
+    MapboxMap {
+        if (!vannotVisibility) {
+            ViewAnnotation(
+                options = viewAnnotationOptions {
+                    geometry(Point.fromLngLat(vannotLong, vannotLat))
+                }
+            ) {
+                when (vannotBar) {
+                    is Bar.Cafe -> {
+                        val test: Cafebar = (vannotBar as Bar.Cafe).data
+                        test?.let { MiniInfoCard(context, test, navController) }
+                    }
+
+                    is Bar.Drink -> {
+                        val test: Drinkbar = (vannotBar as Bar.Drink).data
+                        vannotBar?.let {
+                            MiniInfoCard(context, test, navController)
+                        }
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
+    }
     if (scannedBars.isNotEmpty()) {
         scannedBars.forEach {
             when (it) {
                 is Bar.Cafe -> {
                     if (it.data.location?.longitude != null && it.data.location.latitude != null) {
-                        val bar = it
+                        val bar: Cafebar = it.data
                         PointAnnotation(
                             point = Point.fromLngLat(
                                 it.data.location.longitude,
@@ -257,13 +319,14 @@ fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
                         ) {
                             iconImage = cafeIcon
                             interactionsState.onClicked {
-                                val parts =
-                                    bar.data.metadata.id.split("/", limit = 2)
-                                if (parts.size == 2) {
-                                    val type = parts[0]
-                                    val barID = parts[1]
-                                    navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
-                                }
+                                vannotVisibility = !vannotVisibility
+//                                val parts =
+//                                    bar.data.metadata.id.split("/", limit = 2)
+//                                if (parts.size == 2) {
+//                                    val type = parts[0]
+//                                    val barID = parts[1]
+//                                    navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
+//                                }
                                 true
                             }
                         }
@@ -282,13 +345,14 @@ fun PrintPoints(scannedBars: List<Bar>, navController: NavController) {
                         ) {
                             iconImage = drinkIcon
                             interactionsState.onClicked {
-                                val parts =
-                                    bar.data.metadata.id.split("/", limit = 2)
-                                if (parts.size == 2) {
-                                    val type = parts[0]
-                                    val barID = parts[1]
-                                    navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
-                                }
+                                vannotVisibility = !vannotVisibility
+//                                val parts =
+//                                    bar.data.metadata.id.split("/", limit = 2)
+//                                if (parts.size == 2) {
+//                                    val type = parts[0]
+//                                    val barID = parts[1]
+//                                    navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
+//                                }
                                 true
                             }
                         }
@@ -344,7 +408,7 @@ suspend fun scanBars(
     drinkRepository: barDrinkRepository
 ): List<Bar> {
 
-    return kotlinx.coroutines.coroutineScope {
+    return coroutineScope {
 
         val cafesDeferred = async(Dispatchers.IO) {
             cafeRepository.getCafeByCoords(userPos.latitude, userPos.longitude)
@@ -366,14 +430,307 @@ suspend fun recoverAllBars(
     drinkRepository: barDrinkRepository
 ): List<Bar> {
 
-    return kotlinx.coroutines.coroutineScope {
+    return coroutineScope {
         val cafesDeferred = async { cafeRepository.getAllCafe() }
         val drinksDeferred = async { drinkRepository.getAllDrink() }
         val cafes = cafesDeferred.await().body()?.map { Bar.Cafe(it) } ?: emptyList()
         val drinks =
             drinksDeferred.await().body()?.map { Bar.Drink(it) } ?: emptyList()
         cafes + drinks
+    }
+}
 
+@Composable
+fun MiniInfoCard(
+    context: Context,
+    bar: Cafebar,
+    navController: NavController
+) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.1f)
+                .padding(4.dp),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.AccountCircle,
+                        contentDescription = bar.name,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+
+                    Text(
+                        text = bar.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(android.R.drawable.ic_dialog_map),
+                            contentDescription = "Dirección",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = bar.address.street + ", " + bar.address.locality + ", " + bar.address.country,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    if (bar.phone?.isNotEmpty() == true) {
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(android.R.drawable.ic_menu_call),
+                                contentDescription = "Teléfono",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = bar.phone,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    // Descripción
+
+                    if (bar.capacity?.isNotEmpty() == true) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_group_24),
+                                contentDescription = "Capacidad",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = bar.capacity,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    //Botón compartir
+                    TextButton(onClick = {
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
+                            )
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        startActivity(context, shareIntent, null)
+                    }) {
+                        Text("Compartir")
+                    }
+                    //Botón Ver JSON
+                    FilledTonalButton(onClick = {
+                        val parts = bar.metadata.id.split("/", limit = 2)
+                        if (parts.size == 2) {
+                            val type = parts[0]
+                            val barID = parts[1]
+                            navController.navigate("${AppScreens.JSONViewer.route}/$type/$barID")
+                        }
+                    }) {
+                        Text("Ver JSON")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MiniInfoCard(
+    context: Context,
+    bar: Drinkbar,
+    navController: NavController
+) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Card(
+            modifier = Modifier
+                .fillMaxWidth(0.1f)
+                .padding(4.dp),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            )
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                ) {
+                    Icon(
+                        Icons.Outlined.AccountCircle,
+                        contentDescription = bar.name,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+
+                    Text(
+                        text = bar.name,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(android.R.drawable.ic_dialog_map),
+                            contentDescription = "Dirección",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        Text(
+                            text = bar.address.street + ", " + bar.address.locality + ", " + bar.address.country,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+
+                    if (bar.phone?.isNotEmpty() == true) {
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(android.R.drawable.ic_menu_call),
+                                contentDescription = "Teléfono",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = bar.phone,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+
+                    // Descripción
+
+                    if (bar.capacity?.isNotEmpty() == true) {
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_group_24),
+                                contentDescription = "Capacidad",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = bar.capacity,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    //Botón compartir
+                    TextButton(onClick = {
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
+                            )
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        startActivity(context, shareIntent, null)
+                    }) {
+                        Text("Compartir")
+                    }
+                    //Botón Ver JSON
+                    FilledTonalButton(onClick = {
+                        val parts = bar.metadata.id.split("/", limit = 2)
+                        if (parts.size == 2) {
+                            val type = parts[0]
+                            val barID = parts[1]
+                            navController.navigate("${AppScreens.JSONViewer.route}/$type/$barID")
+                        }
+                    }) {
+                        Text("Ver JSON")
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -42,15 +43,16 @@ fun BarJsonViewer(
     modifier: Modifier = Modifier,
     maxHeight: Int? = 400
 ) {
-    var bar by remember { mutableStateOf<Response<Cafebar>?>(null) }
+    Log.wtf("JSONViewer", "JSONVIEWER ON!!")
+    var bar by remember { mutableStateOf<Cafebar?>(null) }
     if (ID.contains("Cafebars")) {
         LaunchedEffect(true) {
-            val query = GlobalScope.async(Dispatchers.IO) { cafeRep.getCafe(ID, "algarve") }
-            bar = query.await()
+            val query = GlobalScope.async(Dispatchers.IO) { cafeRep.getCafebarByMetadataId(fieldValue =  ID) }
+            bar = query.await().body()?.firstOrNull()
         }
     }
     if (bar != null) {
-        val jsonString = createBarJsonString(bar!!.body()!!)
+        val jsonString = createBarJsonString(bar!!)
 
         val contentModifier = if (maxHeight != null) {
             Modifier
@@ -164,7 +166,7 @@ private fun createBarJsonString(bar: Drinkbar): String {
     jsonObj.put("name", bar.name)
     bar.url?.let { jsonObj.put("url", it) }
     bar.email?.let { jsonObj.put("email", it) }
-    jsonObj.put("tel", bar.phone)
+    bar.phone?.let { jsonObj.put("tel", bar.phone) }
     bar.capacity?.let { jsonObj.put("capacity", it) }
 
     val addressObj = JSONObject()

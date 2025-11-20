@@ -10,5 +10,5 @@ data class Cafebar(
     val capacity: String?,
     val address: Address,
     val location: Location?,
-    @SerializedName("@metadata") val metadata: Metadata
+    @SerializedName("metadata") val metadata: Metadata
 )

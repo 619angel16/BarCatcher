@@ -60,21 +60,26 @@ fun BarInfo(
 ) {
     Log.wtf("ID recuperado", id)
     if (id.contains("Cafebar", true)) {
-        var bar by remember { mutableStateOf<Response<Cafebar>?>(null) }
+        var bar by remember { mutableStateOf<Cafebar?>(null) }
         LaunchedEffect(id) {
-            val query = GlobalScope.async(Dispatchers.IO) { cafeBarRep.getCafe("id", id) }
+            val query =
+                GlobalScope.async(Dispatchers.IO) { cafeBarRep.getCafebarByMetadataId(fieldValue = id) }
             Log.wtf("Query result", query.await().body()!!.toString())
-            bar = query.await()
+            val response = query.await()
+            bar = response.body()?.firstOrNull()
         }
-        bar?.let { InfoCard(context, it.body()!!, navController) }
+
+        bar?.let { InfoCard(context, it, navController) }
     } else if (id.contains("Drinkbar", true)) {
-        var bar by remember { mutableStateOf<Response<Drinkbar>?>(null) }
+        var bar by remember { mutableStateOf<Drinkbar?>(null) }
         LaunchedEffect(id) {
-            val query = GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrink("id", id) }
+            val query =
+                GlobalScope.async(Dispatchers.IO) { drinkBarRep.getDrinkbarByMetadataId(fieldValue = id) }
             Log.wtf("Query result", query.await().body()!!.toString())
-            bar = query.await()
+            val response = query.await()
+            bar = response.body()?.firstOrNull()
         }
-        bar?.let { InfoCard(context, it.body()!!, navController) }
+        bar?.let { InfoCard(context, it, navController) }
     }
 }
 
@@ -84,6 +89,7 @@ fun InfoCard(
     bar: Cafebar,
     navController: NavController
 ) {
+    Log.wtf("PROGRESS CHECKER", "HA LLEGADO BIEN A INFO=")
     Column(
         Modifier
             .fillMaxSize()
@@ -201,15 +207,15 @@ fun InfoCard(
                 ) {
                     //Botón compartir
                     TextButton(onClick = {
-//                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-//                            putExtra(
-//                                Intent.EXTRA_TEXT,
-//                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
-//                            )
-//                            type = "text/plain"
-//                        }
-//                        val shareIntent = Intent.createChooser(sendIntent, null)
-//                        startActivity(context, shareIntent, null)
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
+                            )
+                            type = "text/plain"
+                        }
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        startActivity(context, shareIntent, null)
                     }) {
                         Text("Compartir")
                     }
@@ -324,11 +330,23 @@ fun InfoCard(
 
                     // Descripción
                     if (bar.capacity?.isNotEmpty() == true) {
-                        Text(
-                            text = bar.capacity,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(R.drawable.baseline_group_24),
+                                contentDescription = "Capacidad",
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(16.dp)
+                            )
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            Text(
+                                text = bar.capacity,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -341,15 +359,15 @@ fun InfoCard(
                         horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(onClick = {
-//                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
-//                                putExtra(
-//                                    Intent.EXTRA_TEXT,
-//                                    "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
-//                                )
-//                                type = "text/plain"
-//                            }
-//                            val shareIntent = Intent.createChooser(sendIntent, null)
-//                            startActivity(context, shareIntent, null)
+                            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                                putExtra(
+                                    Intent.EXTRA_TEXT,
+                                    "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
+                                )
+                                type = "text/plain"
+                            }
+                            val shareIntent = Intent.createChooser(sendIntent, null)
+                            startActivity(context, shareIntent, null)
                         }) {
                             Text("Compartir")
                         }

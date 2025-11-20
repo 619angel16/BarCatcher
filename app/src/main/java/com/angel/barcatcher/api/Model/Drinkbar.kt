@@ -10,5 +10,5 @@ data class Drinkbar(
     val servesFood: Boolean?,
     val address: Address,
     val location: Location?,
-    @SerializedName("@metadata") val metadata: Metadata
+    @SerializedName("metadata") val metadata: Metadata
 )
