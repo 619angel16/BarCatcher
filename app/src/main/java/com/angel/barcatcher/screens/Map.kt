@@ -68,6 +68,7 @@ import com.mapbox.common.location.LocationServiceFactory
 import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapboxDelicateApi
+import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.extension.compose.MapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
@@ -82,15 +83,22 @@ import com.mapbox.maps.plugin.Plugin
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.viewannotation.annotationAnchor
 import com.mapbox.maps.viewannotation.geometry
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import okhttp3.internal.wait
+import retrofit2.Response
 
+var vannotVisibility by mutableStateOf(false)
+var vannotBar: Bar? by mutableStateOf(null)
 
-@OptIn(MapboxDelicateApi::class)
+@OptIn(MapboxDelicateApi::class, DelicateCoroutinesApi::class)
 @Composable
 fun MapBoxView(
     context: Context,
@@ -98,6 +106,7 @@ fun MapBoxView(
     drinkRepository: barDrinkRepository,
     navController: NavController
 ) {
+
     val locationService: LocationService = LocationServiceFactory.getOrCreate()
     var locationProvider: DeviceLocationProvider? = null
     var location by remember { mutableStateOf<Location?>(null) }
@@ -108,6 +117,9 @@ fun MapBoxView(
         generateId = BooleanValue(true)
     }
     var heatMode by remember { mutableStateOf(true) }
+
+    var selectedBar by remember { mutableStateOf<Bar?>(null) }
+    var showAnnotation by remember { mutableStateOf(false) }
 
     var scannedBars by remember { mutableStateOf<List<Bar>>(emptyList()) }
 
@@ -140,7 +152,6 @@ fun MapBoxView(
         hasLocationPermission.value = isGranted
     }
 
-    // Solicitar permisos al iniciar
     LaunchedEffect(key1 = Unit) {
         if (!hasLocationPermission.value) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -162,7 +173,6 @@ fun MapBoxView(
                 }
             }
 
-            // Mapbox MapView con Compose
             MapboxMap(
                 modifier = Modifier.fillMaxSize(),
                 mapViewportState = mapViewportState
@@ -185,7 +195,86 @@ fun MapBoxView(
                     HeatmapLayer(layerId = "heatMapLayer", sourceState = geoJsonSource)
                 }
 
-                PrintPoints(scannedBars, context, navController)
+                if (showAnnotation && selectedBar != null) {
+                    when (selectedBar) {
+                        is Bar.Cafe -> {
+                            val cafeBar = (selectedBar as Bar.Cafe).data
+                            cafeBar.location?.let { loc ->
+                                if (loc.longitude != null && loc.latitude != null) {
+                                    ViewAnnotation(
+                                        options = viewAnnotationOptions {
+                                            geometry(Point.fromLngLat(loc.longitude, loc.latitude))
+                                            annotationAnchor {
+                                                anchor(ViewAnnotationAnchor.TOP)
+                                                offsetY(20.0)
+                                            }
+                                            allowOverlap(true)
+                                            allowOverlapWithPuck(true)
+                                            visible(true)
+                                        }
+                                    ) {
+                                        MiniInfoCard(
+                                            bar = cafeBar,
+                                            navController = navController,
+                                            onDismiss = {
+
+                                                showAnnotation = false
+                                            }
+                                        )
+                                    }
+                                } else {
+                                    Log.wtf("VIEWANNOTATION", "Location coords are null")
+                                }
+                            } ?: Log.wtf("VIEWANNOTATION", "Location is null")
+                        }
+
+                        is Bar.Drink -> {
+                            val drinkBar = (selectedBar as Bar.Drink).data
+                            drinkBar.location?.let { loc ->
+                                if (loc.longitude != null && loc.latitude != null) {
+                                    ViewAnnotation(
+                                        options = viewAnnotationOptions {
+                                            geometry(Point.fromLngLat(loc.longitude, loc.latitude))
+                                            annotationAnchor {
+                                                anchor(ViewAnnotationAnchor.TOP)
+                                                offsetY(20.0)
+                                            }
+                                            allowOverlap(true)
+                                            allowOverlapWithPuck(true)
+                                            visible(true)
+                                        }
+                                    ) {
+                                        MiniInfoCard(
+                                            bar = drinkBar,
+                                            navController = navController,
+                                            onDismiss = {
+
+                                                showAnnotation = false
+                                            }
+                                        )
+                                    }
+                                } else {
+                                    Log.wtf("VIEWANNOTATION", "Location coords are null")
+                                }
+                            } ?: Log.wtf("VIEWANNOTATION", "Location is null")
+                        }
+
+                        else -> Log.wtf("VIEWANNOTATION", "selectedBar is neither Cafe nor Drink")
+                    }
+                } else {
+                    Log.wtf(
+                        "VIEWANNOTATION",
+                        "Not showing: showAnnotation=$showAnnotation, selectedBar=${selectedBar != null}"
+                    )
+                }
+
+                PrintPoints(
+                    scannedBars = scannedBars,
+                    onBarSelected = { bar ->
+                        selectedBar = bar
+                        showAnnotation = true
+                    }
+                )
             }
             if (hasLocationPermission.value) {
                 Column(Modifier.align(Alignment.BottomEnd)) {
@@ -254,15 +343,18 @@ fun MapBoxView(
                         )
                     }
                 }
-
             }
+
         }
     }
 }
 
-@Composable
-fun PrintPoints(scannedBars: List<Bar>, context: Context, navController: NavController) {
 
+@Composable
+fun PrintPoints(
+    scannedBars: List<Bar>,
+    onBarSelected: (Bar) -> Unit
+) {
     val cafeIcon = rememberIconImage(
         key = "cafeIcon",
         painter = painterResource(R.drawable.baseline_sports_bar_24)
@@ -271,88 +363,40 @@ fun PrintPoints(scannedBars: List<Bar>, context: Context, navController: NavCont
         key = "drinkIcon",
         painter = painterResource(R.drawable.outline_local_bar_24)
     )
-    var vannotVisibility by remember { mutableStateOf(true) }
 
-    var vannotLong by remember { mutableStateOf(0.0) }
-
-    var vannotLat by remember { mutableStateOf(0.0) }
-
-    var vannotBar by remember { mutableStateOf<Bar?>(null) }
-    MapboxMap {
-        if (!vannotVisibility) {
-            ViewAnnotation(
-                options = viewAnnotationOptions {
-                    geometry(Point.fromLngLat(vannotLong, vannotLat))
-                }
-            ) {
-                when (vannotBar) {
-                    is Bar.Cafe -> {
-                        val test: Cafebar = (vannotBar as Bar.Cafe).data
-                        test?.let { MiniInfoCard(context, test, navController) }
-                    }
-
-                    is Bar.Drink -> {
-                        val test: Drinkbar = (vannotBar as Bar.Drink).data
-                        vannotBar?.let {
-                            MiniInfoCard(context, test, navController)
-                        }
-                    }
-
-                    else -> {
-
-                    }
-                }
-            }
-        }
-    }
     if (scannedBars.isNotEmpty()) {
-        scannedBars.forEach {
-            when (it) {
+        scannedBars.forEach { bar ->
+            when (bar) {
                 is Bar.Cafe -> {
-                    if (it.data.location?.longitude != null && it.data.location.latitude != null) {
-                        val bar: Cafebar = it.data
+                    if (bar.data.location?.longitude != null && bar.data.location.latitude != null) {
+                        Log.wtf("Printed ID", bar.data.toString())
                         PointAnnotation(
                             point = Point.fromLngLat(
-                                it.data.location.longitude,
-                                it.data.location.latitude
+                                bar.data.location.longitude,
+                                bar.data.location.latitude
                             )
                         ) {
                             iconImage = cafeIcon
                             interactionsState.onClicked {
-                                vannotVisibility = !vannotVisibility
-//                                val parts =
-//                                    bar.data.metadata.id.split("/", limit = 2)
-//                                if (parts.size == 2) {
-//                                    val type = parts[0]
-//                                    val barID = parts[1]
-//                                    navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
-//                                }
+                                onBarSelected(bar)
                                 true
                             }
                         }
-
                     }
                 }
 
                 is Bar.Drink -> {
-                    if (it.data.location?.longitude != null && it.data.location.latitude != null) {
-                        val bar = it
+                    if (bar.data.location?.longitude != null && bar.data.location.latitude != null) {
+                        Log.wtf("Printed ID", bar.data.toString())
                         PointAnnotation(
                             point = Point.fromLngLat(
-                                it.data.location.longitude,
-                                it.data.location.latitude
+                                bar.data.location.longitude,
+                                bar.data.location.latitude
                             )
                         ) {
                             iconImage = drinkIcon
                             interactionsState.onClicked {
-                                vannotVisibility = !vannotVisibility
-//                                val parts =
-//                                    bar.data.metadata.id.split("/", limit = 2)
-//                                if (parts.size == 2) {
-//                                    val type = parts[0]
-//                                    val barID = parts[1]
-//                                    navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
-//                                }
+                                onBarSelected(bar)
                                 true
                             }
                         }
@@ -442,145 +486,93 @@ suspend fun recoverAllBars(
 
 @Composable
 fun MiniInfoCard(
-    context: Context,
     bar: Cafebar,
-    navController: NavController
+    navController: NavController,
+    onDismiss: () -> Unit = {}
 ) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+    Card(
+        modifier = Modifier
+            .width(300.dp)
+            .padding(4.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(0.1f)
-                .padding(4.dp),
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                ) {
-                    Icon(
-                        Icons.Outlined.AccountCircle,
-                        contentDescription = bar.name,
-                        modifier = Modifier.fillMaxSize()
-                    )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = onDismiss) {
+                    Text("✕", fontSize = 20.sp)
                 }
+            }
 
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.Outlined.AccountCircle,
+                    contentDescription = bar.name,
+                    modifier = Modifier.size(80.dp)
+                )
+            }
 
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                bar.name.let {
                     Text(
-                        text = bar.name,
-                        style = MaterialTheme.typography.headlineSmall,
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(android.R.drawable.ic_dialog_map),
-                            contentDescription = "Dirección",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Text(
-                            text = bar.address.street + ", " + bar.address.locality + ", " + bar.address.country,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-
-                    if (bar.phone?.isNotEmpty() == true) {
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(android.R.drawable.ic_menu_call),
-                                contentDescription = "Teléfono",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(16.dp)
-                            )
-
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            Text(
-                                text = bar.phone,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    // Descripción
-
-                    if (bar.capacity?.isNotEmpty() == true) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_group_24),
-                                contentDescription = "Capacidad",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(16.dp)
-                            )
-
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            Text(
-                                text = bar.capacity,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
                 }
+                Spacer(modifier = Modifier.height(8.dp))
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(android.R.drawable.ic_dialog_map),
+                        contentDescription = "Dirección",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "${bar.address.street}, ${bar.address.locality}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    //Botón compartir
-                    TextButton(onClick = {
-                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            putExtra(
-                                Intent.EXTRA_TEXT,
-                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
-                            )
-                            type = "text/plain"
-                        }
-                        val shareIntent = Intent.createChooser(sendIntent, null)
-                        startActivity(context, shareIntent, null)
-                    }) {
-                        Text("Compartir")
-                    }
-                    //Botón Ver JSON
-                    FilledTonalButton(onClick = {
-                        val parts = bar.metadata.id.split("/", limit = 2)
-                        if (parts.size == 2) {
+                // Botón para ver más detalles
+                FilledTonalButton(
+                    onClick = {
+                        Log.wtf("CLICK DETAILS", "VER MAS CLICKED")
+                        val id = bar.metadata.id
+
+                        if (!id.isNullOrBlank() && id.contains("/")) {
+                            val parts = id.split("/", limit = 2)
                             val type = parts[0]
                             val barID = parts[1]
-                            navController.navigate("${AppScreens.JSONViewer.route}/$type/$barID")
+                            navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
+                        } else {
+                            Log.e("BAR_ID", "El ID está vacío o no contiene '/' → id=$id")
                         }
-                    }) {
-                        Text("Ver JSON")
-                    }
+
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Ver más")
                 }
             }
         }
@@ -589,145 +581,90 @@ fun MiniInfoCard(
 
 @Composable
 fun MiniInfoCard(
-    context: Context,
     bar: Drinkbar,
-    navController: NavController
+    navController: NavController,
+    onDismiss: () -> Unit = {}
 ) {
-    Column(
-        Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+    Card(
+        modifier = Modifier
+            .width(300.dp)
+            .padding(4.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth(0.1f)
-                .padding(4.dp),
-            shape = RoundedCornerShape(16.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                ) {
-                    Icon(
-                        Icons.Outlined.AccountCircle,
-                        contentDescription = bar.name,
-                        modifier = Modifier.fillMaxSize()
-                    )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = onDismiss) {
+                    Text("✕", fontSize = 20.sp)
                 }
+            }
 
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.Outlined.AccountCircle,
+                    contentDescription = bar.name,
+                    modifier = Modifier.size(80.dp)
+                )
+            }
 
-                    Text(
-                        text = bar.name,
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(android.R.drawable.ic_dialog_map),
-                            contentDescription = "Dirección",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
-                        )
-
-                        Spacer(modifier = Modifier.width(8.dp))
-
-                        Text(
-                            text = bar.address.street + ", " + bar.address.locality + ", " + bar.address.country,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-
-                    if (bar.phone?.isNotEmpty() == true) {
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(android.R.drawable.ic_menu_call),
-                                contentDescription = "Teléfono",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(16.dp)
-                            )
-
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            Text(
-                                text = bar.phone,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-
-                    // Descripción
-
-                    if (bar.capacity?.isNotEmpty() == true) {
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_group_24),
-                                contentDescription = "Capacidad",
-                                tint = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.size(16.dp)
-                            )
-
-                            Spacer(modifier = Modifier.width(8.dp))
-
-                            Text(
-                                text = bar.capacity,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = bar.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    //Botón compartir
-                    TextButton(onClick = {
-                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                            putExtra(
-                                Intent.EXTRA_TEXT,
-                                "Este finde salimos sí o sí. Tengo ruta, ganas y anécdotas pendientes de crear. No acepto excusas: vamos a liarla como solo nosotros sabemos. ¿Te apuntas?\n" + bar.url
-                            )
-                            type = "text/plain"
-                        }
-                        val shareIntent = Intent.createChooser(sendIntent, null)
-                        startActivity(context, shareIntent, null)
-                    }) {
-                        Text("Compartir")
-                    }
-                    //Botón Ver JSON
-                    FilledTonalButton(onClick = {
-                        val parts = bar.metadata.id.split("/", limit = 2)
-                        if (parts.size == 2) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(android.R.drawable.ic_dialog_map),
+                        contentDescription = "Dirección",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = "${bar.address.street}, ${bar.address.locality}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                FilledTonalButton(
+                    onClick = {
+                        Log.wtf("CLICK DETAILS", bar.toString())
+                        val id = bar.metadata.id
+
+                        if (!id.isNullOrBlank() && id.contains("/")) {
+                            val parts = id.split("/", limit = 2)
                             val type = parts[0]
                             val barID = parts[1]
-                            navController.navigate("${AppScreens.JSONViewer.route}/$type/$barID")
+                            navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
+                        } else {
+                            Log.e("BAR_ID", "El ID está vacío o no contiene '/' → id=$id")
                         }
-                    }) {
-                        Text("Ver JSON")
-                    }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Ver más")
                 }
             }
         }

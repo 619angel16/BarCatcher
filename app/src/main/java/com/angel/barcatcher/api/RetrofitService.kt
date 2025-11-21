@@ -68,7 +68,7 @@ interface RetrofitService {
 
         fun makeRetrofitService(context: Context): RetrofitService {
             return Retrofit.Builder()
-                .baseUrl("http://158.49.191.183:5000/api/")
+                .baseUrl("http://192.168.1.133:5000/api/")
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(RetrofitService::class.java)
