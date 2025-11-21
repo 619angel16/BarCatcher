@@ -559,16 +559,10 @@ fun MiniInfoCard(
                     onClick = {
                         Log.wtf("CLICK DETAILS", "VER MAS CLICKED")
                         val id = bar.metadata.id
-
-                        if (!id.isNullOrBlank() && id.contains("/")) {
-                            val parts = id.split("/", limit = 2)
-                            val type = parts[0]
-                            val barID = parts[1]
-                            navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
-                        } else {
-                            Log.e("BAR_ID", "El ID está vacío o no contiene '/' → id=$id")
-                        }
-
+                        val parts = id.split("/", limit = 2)
+                        val type = parts[0]
+                        val barID = parts[1]
+                        navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -652,15 +646,10 @@ fun MiniInfoCard(
                     onClick = {
                         Log.wtf("CLICK DETAILS", bar.toString())
                         val id = bar.metadata.id
-
-                        if (!id.isNullOrBlank() && id.contains("/")) {
-                            val parts = id.split("/", limit = 2)
-                            val type = parts[0]
-                            val barID = parts[1]
-                            navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
-                        } else {
-                            Log.e("BAR_ID", "El ID está vacío o no contiene '/' → id=$id")
-                        }
+                        val parts = id.split("/", limit = 2)
+                        val type = parts[0]
+                        val barID = parts[1]
+                        navController.navigate("${AppScreens.BarInfo.route}/$type/$barID")
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
