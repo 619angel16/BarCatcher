@@ -49,21 +49,29 @@ class BaseRepository(Generic[T]):
                 entities.append(self.dto_class(**doc))    
 
             return entities
-        return []    
-    
-    def find_by_field(self, field_name: str, field_value: Any, limit : int = 100) -> Optional[List[T]]:
-        
+        return []
+
+    def find_by_field(self, field_name: str, field_value: Any, limit: int = 100) -> Optional[List[T]]:
+
         # Ajustar valores RQL
         if isinstance(field_value, str):
             field_value = f"'{field_value}'"
         if isinstance(field_value, bool):
-            print("Entro")
             field_value = str(field_value).lower()
-            print(field_value)
+
+        # Mapeo de campos especiales
+        field_mapping = {
+            "metadata.id": "id()",
+            "@metadata.@id": "id()",
+            "id": "id()"
+        }
+
+        # Usar el mapeo si existe, sino usar el campo tal cual
+        query_field = field_mapping.get(field_name, field_name)
 
         query = f"""
-            FROM {self.collection_name} WHERE {field_name} = {field_value} LIMIT {limit}
-        """        
+            FROM {self.collection_name} WHERE {query_field} = {field_value} LIMIT {limit}
+        """
 
         results = self.client.query_documents(query)
 
